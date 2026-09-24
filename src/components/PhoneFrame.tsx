@@ -12,7 +12,7 @@ export function PhoneFrame({ src, alt, className, eager }: PhoneFrameProps) {
   return (
     <div className={cn('phone', className)}>
       <div className="phone__screen">
-        <img src={src} alt={alt} width={540} height={960} loading={eager ? 'eager' : 'lazy'} decoding="async" draggable={false} />
+        <img src={src} alt={alt} width={720} height={1280} loading={eager ? 'eager' : 'lazy'} decoding="async" draggable={false} />
       </div>
       <span className="phone__speaker" aria-hidden="true" />
     </div>

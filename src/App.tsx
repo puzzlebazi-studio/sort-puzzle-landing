@@ -1,5 +1,4 @@
 import { SvgDefs } from './components/SvgDefs'
-import { Developer } from './sections/Developer'
 import { Download } from './sections/Download'
 import { Faq } from './sections/Faq'
 import { Features } from './sections/Features'
@@ -7,8 +6,10 @@ import { Footer } from './sections/Footer'
 import { Gallery } from './sections/Gallery'
 import { Hero } from './sections/Hero'
 import { HowToPlay } from './sections/HowToPlay'
+import { Mechanics } from './sections/Mechanics'
 import { Navbar } from './sections/Navbar'
 import { Stages } from './sections/Stages'
+import { Studio } from './sections/Studio'
 
 export default function App() {
   return (
@@ -26,9 +27,10 @@ export default function App() {
         <div className="page-bg">
           <Features />
           <HowToPlay />
+          <Mechanics />
           <Stages />
           <Gallery />
-          <Developer />
+          <Studio />
           <Download />
           <Faq />
         </div>

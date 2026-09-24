@@ -22,21 +22,24 @@ Liara, an nginx folder).
 |---|---|
 | Cafe Bazaar and Myket links: they use the placeholder package `com.sortfactory.game` from Player Settings | `PACKAGE_NAME` in `src/data/site.ts` |
 | Myket is shown as «به‌زودی». In-app purchases use Bazaar's Poolakey SDK, so Myket needs its own billing first | `comingSoon` on the Myket entry in `STORES` |
-| Direct download: put the signed release APK at `public/downloads/sort-puzzle.apk`, and update the size note | the `apk` entry in `STORES` |
-| Developer name, role, bio, skills and links. Set `avatar` to show a photo instead of the initial | `DEVELOPER` in `src/data/site.ts` |
+| Direct download: put the signed release APK at `public/downloads/sort-puzzle.apk` | the `apk` entry in `STORES` |
+| Studio name, role, bio and links (Telegram, Instagram…). Set `avatar` to show the studio's logo instead of the initial | `STUDIO` in `src/data/site.ts` |
 | Share preview: `og:image` must be an absolute URL once the site has a domain | `index.html` |
 
-Store badges are drawn in the page's own style. To use Cafe Bazaar's official badge instead,
-change `src/components/StoreButton.tsx`.
+The store buttons are the official badges in `public/` (`cafebazaar-logo-badge.png`,
+`myket-logo-badge.png`). Both are cropped to their edges, so they share the same 421:125
+proportions and line up at one height. To replace one, crop the new badge to its edges the same
+way and update its `width` and `height` in `STORES`.
 
 ## Where things live
 
-- `src/data/site.ts`: store links, the APK and the developer.
-- `src/data/content.ts`: all other copy (features, how to play, the seven difficulty tiers,
-  the stage pipeline, screenshots, FAQ). Tier numbers come from the game's README.
+- `src/data/site.ts`: store links and badges, the APK and the studio.
+- `src/data/content.ts`: all other copy (features, how to play, the four special mechanics, the
+  seven difficulty tiers, screenshots, FAQ). Tier and mechanic numbers come from the game's
+  production stage data (`Assets/SortFactory/Levels/Production/StageDatabase.asset`).
 - `src/sections/`: one component per section, in page order in `src/App.tsx`.
 - `src/components/`: the game-style pieces: `Button3D`, `Title3D` (extruded gold lettering),
-  `GameIcon` (round glossy badge), `TiltCard`, `Coin3D`, `Wave`, `StoreButton`, `PhoneFrame`.
+  `GameIcon` (round glossy badge), `TiltCard`, `Coin3D`, `Wave`, `StoreBadge`, `PhoneFrame`.
 - `src/components/tube/`: the SVG bottles. `lib/liquid.ts` works out each liquid layer for any
   tilt with its area kept constant, like the game's liquid shader. That is how the "pour"
   illustration shows a level surface.
@@ -48,7 +51,10 @@ change `src/components/StoreButton.tsx`.
 Taken from the Unity project and converted for the web:
 
 - `src/assets/img/logo-title.webp`, `star-full.webp`: `Assets/SortFactory/Art/UI` (lossless WebP).
-- `src/assets/img/shots/*.webp`: `ArtSource/Screenshots`.
+- `src/assets/img/shots/*.webp`: captured at 1080×1920 from the real Game scene in Unity
+  PlayMode (the same way as `GameViewTests`' screenshots), for a player at stage 128 and on
+  stages 725, 926 and 956, then scaled to 720×1280.
+- `src/assets/img/mechanics/*.webp`: close-ups cropped from those captures.
 - `public/fonts/Lalezar-Regular.woff2`: the supplied Lalezar TTF, compressed to WOFF2 with every
   glyph and OpenType feature kept. Lalezar is licensed under the SIL Open Font License 1.1.
 - `public/og-image.jpg` and `public/apple-touch-icon.png` were rendered from the page itself.

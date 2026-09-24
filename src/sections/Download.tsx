@@ -1,20 +1,20 @@
-import { BadgeCheck, Languages, Smartphone, WifiOff } from 'lucide-react'
+import { BadgeCheck, Download as DownloadIcon, Smartphone, WifiOff } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import type { CSSProperties } from 'react'
 import homeShot from '../assets/img/shots/home.webp'
+import { Button3D } from '../components/Button3D'
 import { Coin3D } from '../components/Coin3D'
 import { PhoneFrame } from '../components/PhoneFrame'
 import { Reveal } from '../components/Reveal'
 import { Sparkle } from '../components/Sparkle'
-import { StoreButton } from '../components/StoreButton'
+import { StoreBadge } from '../components/StoreBadge'
 import { Title3D } from '../components/Title3D'
-import { BAZAAR, SITE, STORES } from '../data/site'
+import { APK, BAZAAR, SITE, STORES } from '../data/site'
 
 const REQUIREMENTS = [
   { icon: Smartphone, text: `اندروید ${SITE.minAndroid} به بالا` },
   { icon: BadgeCheck, text: 'رایگان' },
   { icon: WifiOff, text: 'بدون نیاز به اینترنت' },
-  { icon: Languages, text: 'کاملاً فارسی' },
 ]
 
 /** A small bottle badge in the middle of the QR code. */
@@ -36,20 +36,24 @@ export function Download() {
                   آماده‌ای؟ دانلود کن!
                 </Title3D>
                 <p className="mx-auto mt-4 max-w-lg text-xl leading-9 text-choco lg:mx-0">
-                  سورت پازل را همین حالا رایگان از کافه‌بازار نصب کن و اولین مرحله را در چند ثانیه شروع کن. هزار مرحله منتظرت است!
+                  سورت پازل را همین حالا رایگان از کافه‌بازار نصب کن و اولین مرحله را در چند ثانیه شروع کن!
                 </p>
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                   {STORES.map((store) => (
-                    <StoreButton key={store.id} store={store} size={store.id === 'bazaar' ? 'lg' : 'md'} />
+                    <StoreBadge key={store.id} store={store} height="3.6rem" />
                   ))}
                 </div>
-                {STORES.some((store) => store.note) && (
-                  <p className="mt-4 text-base text-choco-soft">
-                    {STORES.filter((store) => store.note)
-                      .map((store) => `${store.name}: ${store.note}`)
-                      .join(' · ')}
-                  </p>
-                )}
+                <div className="mt-5 flex justify-center lg:justify-start">
+                  <Button3D
+                    href={APK.href}
+                    download=""
+                    tone="cream"
+                    size="sm"
+                    icon={<DownloadIcon className="size-5" strokeWidth={3} aria-hidden="true" />}
+                  >
+                    {APK.caption} {APK.name}
+                  </Button3D>
+                </div>
                 <ul className="mt-7 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {REQUIREMENTS.map(({ icon: Icon, text }) => (
                     <li
@@ -86,7 +90,7 @@ export function Download() {
                   </div>
                   <p className="mt-3 text-lg">با دوربین گوشی اسکن کن</p>
                 </div>
-                <Coin3D size={58} speed={4} className="absolute top-[42%] right-4" />
+                <Coin3D size={58} speed={4} className="absolute top-[17%] right-3" />
                 <Sparkle size={26} className="absolute top-4 right-16" />
                 <Sparkle size={18} className="absolute bottom-2 left-10" style={{ animationDelay: '1.2s' }} />
               </div>

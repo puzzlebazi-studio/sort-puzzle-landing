@@ -11,28 +11,13 @@ const SECTION_IDS = NAV_LINKS.map((link) => link.href.slice(1))
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [progress, setProgress] = useState(0)
   const active = useScrollSpy(SECTION_IDS)
 
   useEffect(() => {
-    let frame = 0
-    const update = () => {
-      frame = 0
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      setScrolled(window.scrollY > 24)
-      setProgress(max > 0 ? Math.min(1, window.scrollY / max) : 0)
-    }
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update)
-    }
-    update()
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
@@ -47,7 +32,7 @@ export function Navbar() {
       <nav
         aria-label="بخش‌های صفحه"
         className={cn(
-          'relative mx-auto flex max-w-6xl items-center gap-3 rounded-[1.6rem] border-[3px] px-3 py-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 sm:px-4',
+          'mx-auto flex max-w-6xl items-center gap-3 rounded-[1.6rem] border-[3px] px-3 py-2 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 sm:px-4',
           scrolled || open
             ? 'border-choco bg-grape-700/85 shadow-[inset_0_2px_0_rgb(255_255_255/0.15),0_6px_0_rgb(34_21_106/0.9),0_14px_30px_rgb(10_4_36/0.45)] backdrop-blur-md'
             : 'border-transparent',
@@ -94,12 +79,6 @@ export function Navbar() {
             {open ? <X strokeWidth={3} /> : <Menu strokeWidth={3} />}
           </button>
         </div>
-
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-5 -bottom-[3px] h-[3px] origin-right rounded-full bg-[linear-gradient(90deg,#ff3b47,#ff8a1f,#ffd83a,#3ddc4a,#22d3ee,#2f7bff,#a45cff)] transition-opacity"
-          style={{ transform: `scaleX(${progress})`, opacity: scrolled ? 1 : 0 }}
-        />
       </nav>
 
       {open && (
