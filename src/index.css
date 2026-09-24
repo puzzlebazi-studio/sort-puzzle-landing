@@ -1,0 +1,727 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Lalezar';
+  src: url('/fonts/Lalezar-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Lalezar', ui-sans-serif, system-ui, sans-serif;
+
+  /* The chocolate outline shared by all of the game's art (#3A1500). */
+  --color-choco: #3a1500;
+  --color-choco-soft: #6b3a17;
+  --color-cream: #fff6e3;
+  --color-cream-deep: #f1d7a6;
+
+  --color-grape-100: #e7e2ff;
+  --color-grape-200: #cbc1ff;
+  --color-grape-300: #a998ff;
+  --color-grape-400: #8b74f5;
+  --color-grape-500: #6d55e6;
+  --color-grape-600: #5540c8;
+  --color-grape-700: #4331ae;
+  --color-grape-800: #31238f;
+  --color-grape-900: #231870;
+  --color-grape-950: #160e4b;
+
+  --color-gold-200: #fff1b3;
+  --color-gold-300: #ffe27a;
+  --color-gold-400: #ffc93c;
+  --color-gold-500: #ffb020;
+  --color-gold-600: #f08a12;
+  --color-gold-700: #c4620a;
+
+  --color-leaf-400: #6be84f;
+  --color-leaf-500: #45cf34;
+  --color-aqua-300: #8fecff;
+  --color-aqua-400: #4fd8f7;
+  --color-aqua-500: #22b8ee;
+  --color-berry-400: #ff8cc6;
+  --color-berry-500: #ff5fb2;
+  --color-flame-500: #ff3b47;
+
+  --animate-bob: bob 3.4s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-twinkle: twinkle 2.8s ease-in-out infinite;
+  --animate-wave: wave-drift 14s linear infinite;
+  --animate-pop-in: pop-in 0.55s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  --animate-bob-slow: bob 5s ease-in-out infinite;
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+    }
+    50% {
+      transform: translate3d(0, -18px, 0) rotate(calc(var(--r, 0deg) + 6deg));
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.55) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(45deg);
+    }
+  }
+  @keyframes wave-drift {
+    to {
+      transform: translateX(50%);
+    }
+  }
+  @keyframes pop-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.2) rotate(-20deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+}
+
+:root {
+  --outline-choco:
+    0 2px 0 var(--color-choco), 2px 0 0 var(--color-choco), -2px 0 0 var(--color-choco), 0 -2px 0 var(--color-choco),
+    1.5px 1.5px 0 var(--color-choco), -1.5px 1.5px 0 var(--color-choco), 1.5px -1.5px 0 var(--color-choco),
+    -1.5px -1.5px 0 var(--color-choco), 0 4px 0 var(--color-choco);
+  --outline-choco-sm:
+    0 1.5px 0 var(--color-choco), 1.5px 0 0 var(--color-choco), -1.5px 0 0 var(--color-choco),
+    0 -1.5px 0 var(--color-choco), 1px 1px 0 var(--color-choco), -1px 1px 0 var(--color-choco),
+    1px -1px 0 var(--color-choco), -1px -1px 0 var(--color-choco), 0 2.5px 0 var(--color-choco);
+  /* Bottles, drops, sparkles and bubbles, like the game's background (bg_main). */
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='white' fill-opacity='0.07'%3E%3Cpath transform='translate(36 44) rotate(-18)' d='M-4.5-15h9v6l6 7.5V13a4 4 0 0 1-4 4h-13a4 4 0 0 1-4-4V-1.5l6-7.5z'/%3E%3Cpath transform='translate(156 40)' fill-rule='evenodd' d='M0-11a11 11 0 1 1 0 22a11 11 0 1 1 0-22zm0 4.5a6.5 6.5 0 1 0 0 13a6.5 6.5 0 1 0 0-13zm0 3.5a3 3 0 1 1 0 6a3 3 0 1 1 0-6z'/%3E%3Cpath transform='translate(96 112) rotate(14)' d='M0-15C5.5-7 9.5-2.5 9.5 3.5a9.5 9.5 0 0 1-19 0C-9.5-2.5-5.5-7 0-15z'/%3E%3Cpath transform='translate(212 116)' d='M0-12Q1.8-1.8 12 0Q1.8 1.8 0 12Q-1.8 1.8-12 0Q-1.8-1.8 0-12z'/%3E%3Cpath transform='translate(38 176) scale(.85)' fill-rule='evenodd' d='M0-11a11 11 0 1 1 0 22a11 11 0 1 1 0-22zm0 4.5a6.5 6.5 0 1 0 0 13a6.5 6.5 0 1 0 0-13zm0 3.5a3 3 0 1 1 0 6a3 3 0 1 1 0-6z'/%3E%3Cpath transform='translate(158 180) rotate(16) scale(.9)' d='M-4.5-15h9v6l6 7.5V13a4 4 0 0 1-4 4h-13a4 4 0 0 1-4-4V-1.5l6-7.5z'/%3E%3Cpath transform='translate(98 222) scale(.75)' d='M0-12Q1.8-1.8 12 0Q1.8 1.8 0 12Q-1.8 1.8-12 0Q-1.8-1.8 0-12z'/%3E%3Cpath transform='translate(214 212) rotate(-12) scale(.8)' d='M0-15C5.5-7 9.5-2.5 9.5 3.5a9.5 9.5 0 0 1-19 0C-9.5-2.5-5.5-7 0-15z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    font-synthesis: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--color-grape-900);
+    color: #fff;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: var(--color-gold-400);
+    color: var(--color-choco);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-gold-300);
+    outline-offset: 3px;
+  }
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+@layer components {
+  /* ---------- Tones: highlight, face, shade and the darker lip below ---------- */
+  .tone-leaf {
+    --t-hi: #b4f98f;
+    --t: #58d93f;
+    --t-lo: #33ae2b;
+    --t-lip: #23801f;
+  }
+  .tone-gold {
+    --t-hi: #fff2a6;
+    --t: #ffc93c;
+    --t-lo: #f7a11a;
+    --t-lip: #c26a0b;
+  }
+  .tone-aqua {
+    --t-hi: #aaf2ff;
+    --t: #41cff6;
+    --t-lo: #1ba6e1;
+    --t-lip: #0e76ab;
+  }
+  .tone-pink {
+    --t-hi: #ffc6e4;
+    --t: #ff72bc;
+    --t-lo: #ec4798;
+    --t-lip: #b52a6e;
+  }
+  .tone-orange {
+    --t-hi: #ffd6a3;
+    --t: #ffa03a;
+    --t-lo: #f47d12;
+    --t-lip: #b8560b;
+  }
+  .tone-red {
+    --t-hi: #ffb6ba;
+    --t: #ff5a64;
+    --t-lo: #e7343f;
+    --t-lip: #a61d27;
+  }
+  .tone-grape {
+    --t-hi: #d4c8ff;
+    --t: #9076ff;
+    --t-lo: #6c4cec;
+    --t-lip: #4a2fb5;
+  }
+  .tone-sky {
+    --t-hi: #bcd5ff;
+    --t: #5593ff;
+    --t-lo: #316ee8;
+    --t-lip: #1f4cb0;
+  }
+  .tone-cream {
+    --t-hi: #ffffff;
+    --t: #fff6e0;
+    --t-lo: #f7e0b0;
+    --t-lip: #d8b077;
+  }
+
+  /* ---------- Glossy pill button, like btn_play ---------- */
+  .btn-3d {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55em;
+    min-height: 3.4rem;
+    padding: 0.3em 1.65em 0.6em;
+    border: 3px solid var(--color-choco);
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--t-hi) 0%, var(--t) 36%, var(--t-lo) 100%);
+    box-shadow:
+      inset 0 -0.3em 0 var(--t-lip),
+      inset 0 0.14em 0 rgb(255 255 255 / 0.45),
+      0 0.3em 0 rgb(58 21 0 / 0.4),
+      0 0.65em 1.3em rgb(18 8 60 / 0.35);
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-shadow: var(--outline-choco);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1),
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
+  }
+  .btn-3d::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0.16em 0.7em auto;
+    height: 44%;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.08));
+    pointer-events: none;
+  }
+  .btn-3d:hover {
+    transform: translateY(-2px) scale(1.03);
+    filter: brightness(1.06) saturate(1.05);
+  }
+  .btn-3d:active {
+    transform: translateY(3px) scale(0.98);
+    box-shadow:
+      inset 0 -0.16em 0 var(--t-lip),
+      inset 0 0.14em 0 rgb(255 255 255 / 0.45),
+      0 0.06em 0 rgb(58 21 0 / 0.4),
+      0 0.25em 0.6em rgb(18 8 60 / 0.3);
+  }
+  .btn-3d:disabled,
+  .btn-3d[aria-disabled='true'] {
+    cursor: default;
+    filter: grayscale(0.55) brightness(0.9);
+    transform: none;
+  }
+  .btn-3d.tone-cream {
+    color: var(--color-choco);
+    text-shadow: none;
+  }
+  .btn-3d--sm {
+    min-height: 2.6rem;
+    padding: 0.2em 1.15em 0.45em;
+    font-size: 1.05rem;
+  }
+  .btn-3d--lg {
+    min-height: 4.1rem;
+    padding: 0.35em 2em 0.65em;
+    font-size: 1.55rem;
+  }
+
+  /* ---------- Round badge with a white, outlined glyph, like btn_round_hint ---------- */
+  .icon-3d {
+    position: relative;
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    border: 3px solid var(--color-choco);
+    border-radius: 50%;
+    background: radial-gradient(120% 95% at 50% 12%, var(--t-hi) 0%, var(--t) 42%, var(--t-lo) 100%);
+    box-shadow:
+      inset 0 -0.3em 0 var(--t-lip),
+      inset 0 0.12em 0 rgb(255 255 255 / 0.5),
+      0 0.28em 0 rgb(58 21 0 / 0.38),
+      0 0.6em 1.1em rgb(18 8 60 / 0.35);
+  }
+  .icon-3d::before {
+    content: '';
+    position: absolute;
+    inset: 7% 20% auto;
+    height: 34%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0));
+    pointer-events: none;
+  }
+  .icon-3d > svg {
+    position: absolute;
+    inset: 22%;
+    width: 56%;
+    height: 56%;
+    overflow: visible;
+  }
+  .icon-3d > svg:first-of-type {
+    color: var(--color-choco);
+  }
+  .icon-3d > svg:last-of-type {
+    color: #fff;
+  }
+
+  /* ---------- Cream slab with visible thickness, like panel_popup ---------- */
+  .card-3d {
+    position: relative;
+    border: 3px solid var(--color-choco);
+    border-radius: 1.75rem;
+    background: linear-gradient(180deg, #fffbf2 0%, #fff2d6 100%);
+    box-shadow:
+      0 8px 0 #eac48a,
+      0 8px 0 3px var(--color-choco),
+      0 20px 36px rgb(12 4 40 / 0.45);
+    color: var(--color-choco);
+  }
+
+  /* ---------- Dark HUD pill, like hud_pill ---------- */
+  .pill-3d {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    border: 3px solid var(--color-choco);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #5d47cc 0%, #3e2a9f 100%);
+    box-shadow:
+      inset 0 2px 0 rgb(255 255 255 / 0.2),
+      inset 0 -4px 0 rgb(0 0 0 / 0.22),
+      0 4px 0 rgb(58 21 0 / 0.45);
+    color: #fff;
+  }
+
+  /* ---------- Violet panel for dark sections ---------- */
+  .panel-3d {
+    position: relative;
+    border: 3px solid var(--color-choco);
+    border-radius: 1.75rem;
+    background: linear-gradient(180deg, rgb(94 72 214 / 0.92) 0%, rgb(58 40 160 / 0.92) 100%);
+    box-shadow:
+      inset 0 2px 0 rgb(255 255 255 / 0.18),
+      0 7px 0 #22156a,
+      0 7px 0 3px var(--color-choco),
+      0 20px 36px rgb(10 4 36 / 0.45);
+  }
+
+  /* ---------- Extruded gold title, like logo_title ---------- */
+  .title-3d {
+    position: relative;
+    display: inline-block;
+    padding-inline: 0.14em;
+    line-height: 1.45;
+  }
+  .title-3d > span {
+    display: block;
+  }
+  .title-3d__back {
+    color: var(--color-choco);
+    -webkit-text-stroke: 0.2em var(--color-choco);
+    text-shadow:
+      0 0.12em 0 var(--color-choco),
+      0 0.22em 0.26em rgb(12 4 40 / 0.55);
+    user-select: none;
+  }
+  .title-3d__depth,
+  .title-3d__face {
+    position: absolute;
+    inset: 0;
+    padding-inline: inherit;
+  }
+  .title-3d__depth {
+    color: var(--ti-depth, #c7600a);
+    transform: translateY(0.075em);
+    user-select: none;
+  }
+  .title-3d__ink {
+    background: var(--ti-face, linear-gradient(180deg, #fff7c9 22%, #ffd84a 44%, #ffb526 60%, #ff9419 76%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .title-3d--white {
+    --ti-face: linear-gradient(180deg, #ffffff 40%, #ece6ff 62%, #cfc3ff 78%);
+    --ti-depth: #9d89ee;
+  }
+  .title-3d--cream {
+    --ti-face: linear-gradient(180deg, #ffffff 40%, #fff6dc 60%, #ffe3a6 78%);
+    --ti-depth: #c7600a;
+  }
+  .title-3d--red {
+    --ti-face: linear-gradient(180deg, #ffd1d4 22%, #ff6b74 46%, #ea3b46 72%);
+    --ti-depth: #9c1822;
+  }
+
+  /* ---------- Page background: the game's violet with its icon pattern ---------- */
+  .page-bg {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(180deg, #3a2aa5 0%, #34279b 16%, #2f2291 34%, #2a1e86 52%, #251a7a 70%, #20166d 86%, #1b1360 100%);
+  }
+  .page-bg::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-image: var(--pattern);
+    background-size: 240px 240px;
+    pointer-events: none;
+  }
+
+  /* ---------- Gold slab for the download call to action ---------- */
+  .gold-panel {
+    border: 4px solid var(--color-choco);
+    background:
+      radial-gradient(38rem 20rem at 85% 0%, rgb(255 246 196 / 0.9) 0%, transparent 65%),
+      linear-gradient(180deg, #ffd84a 0%, #ffbd2e 45%, #f59a17 100%);
+    box-shadow:
+      inset 0 4px 0 rgb(255 255 255 / 0.6),
+      inset 0 -10px 0 #d9760f,
+      0 12px 0 #8f470a,
+      0 12px 0 4px var(--color-choco),
+      0 32px 54px rgb(10 4 36 / 0.5);
+    color: var(--color-choco);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    padding: 0.15em 0.95em 0.3em;
+    border: 2.5px solid var(--color-choco);
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--t-hi), var(--t) 60%, var(--t-lo));
+    box-shadow:
+      inset 0 -3px 0 var(--t-lip),
+      0 3px 0 rgb(58 21 0 / 0.4);
+    color: #fff;
+    font-size: 1rem;
+    text-shadow: var(--outline-choco-sm);
+  }
+
+  .text-outline {
+    text-shadow: var(--outline-choco);
+  }
+  .text-outline-sm {
+    text-shadow: var(--outline-choco-sm);
+  }
+
+  /* ---------- Scroll reveal with a slight 3D tip ---------- */
+  .reveal {
+    opacity: 0;
+    transform: perspective(900px) translate3d(0, 34px, 0) rotateX(12deg);
+    transition:
+      opacity 0.7s ease,
+      transform 0.9s cubic-bezier(0.2, 0.85, 0.25, 1);
+    transition-delay: var(--delay, 0ms);
+  }
+  .reveal[data-shown='true'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- Spinning 3D coin ---------- */
+  .coin-3d {
+    position: relative;
+    width: var(--size, 64px);
+    height: var(--size, 64px);
+    perspective: 700px;
+  }
+  .coin-3d__spin {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: coin-spin var(--speed, 4s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .coin-3d__layer {
+    position: absolute;
+    inset: 3%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #d9870d, #a45a06);
+    transform: translateZ(var(--z));
+  }
+  .coin-3d__face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+  }
+  .coin-3d__face--back {
+    transform: rotateY(180deg) translateZ(calc(var(--size, 64px) * 0.07));
+  }
+  .coin-3d__face--front {
+    transform: translateZ(calc(var(--size, 64px) * 0.07));
+  }
+  @keyframes coin-spin {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+
+  /* ---------- Pointer tilt ---------- */
+  .tilt {
+    position: relative;
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .tilt:hover {
+    --lift: -6px;
+    transition-duration: 0.15s;
+  }
+  .tilt__glare {
+    position: absolute;
+    inset: 0;
+    border-radius: 1.75rem;
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgb(255 255 255 / 0.55), transparent 55%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .tilt:hover .tilt__glare {
+    opacity: 1;
+  }
+
+  /* ---------- Phone mockup ---------- */
+  .phone {
+    position: relative;
+    padding: 4.5%;
+    border: 3px solid var(--color-choco);
+    border-radius: 13% / 7.2%;
+    background: linear-gradient(150deg, #3b2f73 0%, #1d1640 45%, #120d2b 100%);
+    box-shadow:
+      inset 0 0 0 2px rgb(255 255 255 / 0.1),
+      inset 0 3px 0 rgb(255 255 255 / 0.12),
+      0 26px 50px rgb(8 3 30 / 0.55);
+  }
+  .phone__screen {
+    overflow: hidden;
+    border: 2px solid #0b0720;
+    border-radius: 9% / 5%;
+    aspect-ratio: 9 / 16;
+    background: var(--color-grape-600);
+  }
+  .phone__screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .phone__speaker {
+    position: absolute;
+    top: 2.1%;
+    left: 50%;
+    width: 22%;
+    height: 1.1%;
+    border-radius: 99px;
+    background: #0b0720;
+    transform: translateX(-50%);
+  }
+
+  /* ---------- Store badge ---------- */
+  .store-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem 0.75rem 0.65rem 1.4rem;
+    border: 3px solid var(--color-choco);
+    border-radius: 1.25rem;
+    background: linear-gradient(180deg, #33285e 0%, #1a1336 100%);
+    box-shadow:
+      inset 0 2px 0 rgb(255 255 255 / 0.16),
+      inset 0 -5px 0 rgb(0 0 0 / 0.35),
+      0 5px 0 rgb(58 21 0 / 0.5),
+      0 14px 26px rgb(10 4 36 / 0.4);
+    color: #fff;
+    text-align: start;
+    transition:
+      transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1),
+      box-shadow 0.18s ease;
+  }
+  a.store-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+  }
+  a.store-btn:active {
+    transform: translateY(3px) scale(0.98);
+    box-shadow:
+      inset 0 2px 0 rgb(255 255 255 / 0.16),
+      inset 0 -3px 0 rgb(0 0 0 / 0.35),
+      0 1px 0 rgb(58 21 0 / 0.5),
+      0 6px 14px rgb(10 4 36 / 0.4);
+  }
+  .store-btn__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.9rem;
+    font-size: 0.7rem;
+  }
+  .store-btn__icon::before {
+    border-radius: 0.6rem;
+  }
+  .store-btn__caption {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    color: rgb(255 255 255 / 0.7);
+  }
+  .store-btn__name {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+  .store-btn--lg {
+    padding: 0.65rem 0.9rem 0.8rem 1.8rem;
+  }
+  .store-btn--lg .store-btn__icon {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  .store-btn--lg .store-btn__name {
+    font-size: 1.6rem;
+  }
+  .store-btn--soon {
+    cursor: default;
+    filter: saturate(0.6);
+    opacity: 0.8;
+  }
+  .store-btn__soon {
+    position: absolute;
+    top: -0.8rem;
+    inset-inline-start: -0.6rem;
+    padding: 0 0.6rem 0.15rem;
+    border: 2.5px solid var(--color-choco);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffe27a, #ffb020);
+    color: var(--color-choco);
+    font-size: 0.85rem;
+    transform: rotate(8deg);
+  }
+
+  @keyframes bubble-rise {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.6);
+    }
+    15% {
+      opacity: 0.85;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(var(--rise, -120px)) scale(1);
+    }
+  }
+  .bubble {
+    animation: bubble-rise var(--dur, 3s) ease-in infinite;
+    animation-delay: var(--delay, 0s);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+/* Referenced by name from inline styles and arbitrary animate-[...] classes. */
+@keyframes shadow-bob {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.45;
+  }
+}
+@keyframes lift {
+  0%,
+  100% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+@keyframes ripple {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+@keyframes pipe {
+  to {
+    background-position: 0 200%;
+  }
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
