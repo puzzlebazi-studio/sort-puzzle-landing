@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
-import type { Tone } from '../data/content'
 import { cn } from '../lib/cn'
+import type { Tone } from '../lib/tone'
 
 interface GameIconProps {
   icon: LucideIcon

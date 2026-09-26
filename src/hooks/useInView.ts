@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 
-const supported = typeof IntersectionObserver !== 'undefined'
-
-/** True once the element has scrolled into view (and stays true). */
+/**
+ * True once the element has scrolled into view (and stays true). It starts false everywhere,
+ * so pre-rendered HTML and the first browser render agree; the root layout shows everything
+ * when scripts are off.
+ */
 export function useInView<T extends Element>(rootMargin = '0px 0px -12% 0px') {
   const ref = useRef<T>(null)
-  // Without IntersectionObserver there is nothing to wait for, so show everything.
-  const [inView, setInView] = useState(!supported)
+  const [inView, setInView] = useState(false)
 
   useEffect(() => {
     const element = ref.current
-    if (!element || !supported) return
+    if (!element) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

@@ -1,7 +1,7 @@
 import { Sparkles } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { Tone } from '../data/content'
 import { cn } from '../lib/cn'
+import type { Tone } from '../lib/tone'
 import { Reveal } from './Reveal'
 import { Title3D } from './Title3D'
 

@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react'
-import type { Store } from '../data/site'
+import type { Store } from '../games/types'
+import { UI } from '../i18n/ui'
+import { useLocale } from '../i18n/useLocale'
 import { cn } from '../lib/cn'
 
 interface StoreBadgeProps {
@@ -9,18 +11,20 @@ interface StoreBadgeProps {
   className?: string
 }
 
-/** The store's official "دریافت از" badge, lifting like the page's buttons. Renders nothing for a store without one. */
+/** The store's official "get it on" badge, lifting like the page's buttons. Renders nothing for a store without one. */
 export function StoreBadge({ store, height, className }: StoreBadgeProps) {
-  const { badge } = store
+  const locale = useLocale()
+  const badge = store.badge?.[locale] ?? store.badge?.fa
   if (!badge) return null
-  const label = `${store.caption} ${store.name}`
+  const label = `${store.caption[locale]} ${store.name[locale]}`
+  const soon = UI[locale].soon
   const style = height ? ({ '--badge-h': height } as CSSProperties) : undefined
   const image = (
     <img
       src={badge.src}
       width={badge.width}
       height={badge.height}
-      alt={store.comingSoon ? `${label} (به‌زودی)` : label}
+      alt={store.comingSoon ? `${label} (${soon})` : label}
       className="store-badge__img"
       draggable={false}
     />
@@ -28,10 +32,10 @@ export function StoreBadge({ store, height, className }: StoreBadgeProps) {
 
   if (store.comingSoon) {
     return (
-      <span className={cn('store-badge store-badge--soon', className)} style={style} title={`${store.name} به‌زودی`}>
+      <span className={cn('store-badge store-badge--soon', className)} style={style} title={`${store.name[locale]}: ${soon}`}>
         {image}
         <span className="store-badge__soon" aria-hidden="true">
-          به‌زودی
+          {soon}
         </span>
       </span>
     )

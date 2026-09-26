@@ -1,17 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <clipPath id="i"><path d="M22 16h20v34a10 10 0 0 1-20 0z"/></clipPath>
-    <linearGradient id="c" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f4cd95"/><stop offset="1" stop-color="#b77c42"/></linearGradient>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff2a6"/><stop offset=".42" stop-color="#ffc93c"/><stop offset="1" stop-color="#f7a11a"/></linearGradient>
   </defs>
   <rect x="2" y="2" width="60" height="60" rx="16" fill="#5540c8"/>
-  <g clip-path="url(#i)">
-    <rect x="22" y="16" width="20" height="44" fill="#fff" fill-opacity=".25"/>
-    <rect x="22" y="47" width="20" height="13" fill="#2f7bff"/>
-    <rect x="22" y="36" width="20" height="11" fill="#ffd83a"/>
-    <rect x="22" y="25" width="20" height="11" fill="#ff3b47"/>
-    <rect x="25" y="20" width="3.5" height="30" rx="1.75" fill="#fff" fill-opacity=".55"/>
+  <g transform="translate(9.7 17) scale(.36)" stroke="#3a1500" stroke-width="8" stroke-linejoin="round">
+    <path d="M0 10Q0 0 10 0H36C40 0 43-3 41-7C32-12 38-24 50-24C62-24 68-12 59-7C57-3 60 0 64 0H90Q100 0 100 10V36C100 40 103 43 107 41C112 32 124 38 124 50C124 62 112 68 107 59C103 57 100 60 100 64V90Q100 100 90 100H64C60 100 57 97 59 93C68 88 62 76 50 76C38 76 32 88 41 93C43 97 40 100 36 100H10Q0 100 0 90V64C0 60 3 57 7 59C12 68 24 62 24 50C24 38 12 32 7 41C3 43 0 40 0 36Z" transform="translate(0 7)" fill="#c26a0b"/>
+    <path d="M0 10Q0 0 10 0H36C40 0 43-3 41-7C32-12 38-24 50-24C62-24 68-12 59-7C57-3 60 0 64 0H90Q100 0 100 10V36C100 40 103 43 107 41C112 32 124 38 124 50C124 62 112 68 107 59C103 57 100 60 100 64V90Q100 100 90 100H64C60 100 57 97 59 93C68 88 62 76 50 76C38 76 32 88 41 93C43 97 40 100 36 100H10Q0 100 0 90V64C0 60 3 57 7 59C12 68 24 62 24 50C24 38 12 32 7 41C3 43 0 40 0 36Z" fill="url(#g)"/>
+    <path d="M12 30V21Q12 12 21 12H29" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="7" stroke-linecap="round"/>
   </g>
-  <path d="M22 16v34a10 10 0 0 0 20 0V16" fill="none" stroke="#3a1500" stroke-width="3.5" stroke-linejoin="round"/>
-  <rect x="24.5" y="5" width="15" height="12" rx="3.5" fill="url(#c)" stroke="#3a1500" stroke-width="3"/>
-  <rect x="18.5" y="14" width="27" height="5.5" rx="2.75" fill="#dbeaff" stroke="#3a1500" stroke-width="3"/>
 </svg>

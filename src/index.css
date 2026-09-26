@@ -113,7 +113,7 @@
 @layer base {
   html {
     color-scheme: dark;
-    scroll-behavior: smooth;
+    /* In-page links scroll smoothly from useHashLinks; a CSS smooth scroll would also animate page changes. */
     scroll-padding-top: 6.5rem;
     font-synthesis: none;
     -webkit-tap-highlight-color: transparent;
@@ -132,6 +132,10 @@
   :focus-visible {
     outline: 3px solid var(--color-gold-300);
     outline-offset: 3px;
+  }
+  /* Sections that in-page links move focus to. */
+  :is(main, section)[tabindex='-1']:focus-visible {
+    outline: none;
   }
   img {
     -webkit-user-drag: none;
@@ -633,6 +637,14 @@
   }
 }
 
+/*
+ * Body copy is spaced for Lalezar's tall Persian letters; its Latin letters need less room.
+ * Outside the layers so it outranks the utilities it adjusts.
+ */
+:lang(en) :is(.leading-8, .leading-9, .leading-10, .sm\:leading-10, .md\:leading-10) {
+  line-height: 1.7;
+}
+
 /* Referenced by name from inline styles and arbitrary animate-[...] classes. */
 @keyframes shadow-bob {
   0%,
@@ -677,9 +689,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
