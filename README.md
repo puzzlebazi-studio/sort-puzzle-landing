@@ -20,6 +20,7 @@ pnpm install
 pnpm dev        # http://localhost:5173
 pnpm build      # type-checks, then renders every page to static HTML in dist/
 pnpm preview    # serves dist/ the way a static host does
+pnpm deploy:liara  # builds and uploads dist/ to Liara (see Deploying)
 pnpm typecheck
 pnpm lint
 ```
@@ -37,18 +38,17 @@ nginx needs `error_page 404 /404.html;`. React Router builds in `.react-router/b
 
 ### Liara
 
-Create a **Static** app on Liara, then build and deploy `dist/` (the same way Liara's docs
-deploy other static site generators):
+The site runs on a **Static** app, which serves the files it receives as they are and runs no
+build. So deploy the built `dist/`, never the project folder or the GitHub repo: connected to the
+repo, the app serves the source and answers with a 503 about a missing `index.html`.
 
 ```bash
-pnpm build
-cd dist
-liara deploy --platform=static --app <your-app-id>
+pnpm dlx @liara/cli login   # once
+pnpm deploy:liara           # builds, then uploads dist/; add --app <app-id> to skip picking the app
 ```
 
-Or zip the contents of `dist/` (with `index.html` at the top of the zip) and upload it as a
-new deployment in the console. Don't deploy the project folder itself: Liara runs no build for
-static apps.
+Or zip the files inside `dist/` (so `index.html` is at the top of the zip, not in a `dist` folder)
+and upload the zip as a new deployment in the console.
 
 `public/liara_nginx.conf` lands at the root of `dist/`, where Liara looks for it. It
 replaces Liara's default nginx rules, which answer every unknown address with `/index.html` (here,
