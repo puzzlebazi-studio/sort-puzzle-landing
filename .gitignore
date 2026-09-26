@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 .react-router
+
+# The APK offered for direct download: too big for git. Copy each release in before building.
+public/downloads/
 *.local
 
 # Editor directories and files

@@ -18,39 +18,39 @@ site, Persian and English, is set in Lalezar.
 ```bash
 pnpm install
 pnpm dev        # http://localhost:5173
-pnpm build      # type-checks, then renders every page to static HTML in dist/client/
-pnpm preview    # serves dist/client/ the way a static host does
+pnpm build      # type-checks, then renders every page to static HTML in dist/
+pnpm preview    # serves dist/ the way a static host does
 pnpm typecheck
 pnpm lint
 ```
 
 ## Deploying
 
-`dist/client/` is a plain static site: upload that folder to any static host (Netlify, Vercel,
+`dist/` is a plain static site: upload that folder to any static host (Netlify, Vercel,
 Cloudflare Pages, Liara, an nginx folder). Each page is its own `index.html` (`fa/index.html`,
 `en/sort-puzzle/index.html`…) with its own title, description and share preview, so links shared
 on Telegram or Instagram show the right page in the right language.
 
 `404.html` is the "page not found" screen. Most hosts serve it for unknown paths on their own;
-nginx needs `error_page 404 /404.html;`. `dist/server/` is only used while building and is not
-deployed.
+nginx needs `error_page 404 /404.html;`. React Router builds in `.react-router/build/` first
+(pre-rendering needs a server build); the build keeps only the site and moves it to `dist/`.
 
 ### Liara
 
-Create a **Static** app on Liara, then build and deploy `dist/client/` (the same way Liara's docs
+Create a **Static** app on Liara, then build and deploy `dist/` (the same way Liara's docs
 deploy other static site generators):
 
 ```bash
 pnpm build
-cd dist/client
+cd dist
 liara deploy --platform=static --app <your-app-id>
 ```
 
-Or zip the contents of `dist/client/` (with `index.html` at the top of the zip) and upload it as a
+Or zip the contents of `dist/` (with `index.html` at the top of the zip) and upload it as a
 new deployment in the console. Don't deploy the project folder itself: Liara runs no build for
 static apps.
 
-`public/liara_nginx.conf` lands at the root of `dist/client/`, where Liara looks for it. It
+`public/liara_nginx.conf` lands at the root of `dist/`, where Liara looks for it. It
 replaces Liara's default nginx rules, which answer every unknown address with `/index.html` (here,
 the redirect to `/fa/`): unknown addresses get `404.html` instead, and it turns on gzip and browser
 caching (a year for the build's content-hashed `assets/`).
@@ -59,10 +59,10 @@ caching (a year for the build's content-hashed `assets/`).
 
 | What | Where |
 | --- | --- |
-| The site's address, e.g. `https://example.ir`. Share previews need it as an absolute URL, and it adds canonical and language links for search engines | `SITE_URL` in `src/site.ts` |
+| The site's address, `https://puzzlebazi.studio`. Share previews need it for absolute image URLs, and it adds canonical and language links for search engines. Change it if the domain changes | `SITE_URL` in `src/site.ts` |
 | Cafe Bazaar and Myket links use the game's package, `com.sortpuzzle.game`. They show «یافت نشد» until the listing is published | `PACKAGE_NAME` in `src/games/sort-puzzle/stores.ts` |
 | Myket is shown as «به‌زودی». In-app purchases use Bazaar's Poolakey SDK, so Myket needs its own billing first | `comingSoon` on the Myket entry in `STORES` |
-| Direct download: put the signed release APK at `public/downloads/sort-puzzle.apk` | the `apk` entry in `STORES` |
+| Direct download: the signed release APK lives at `public/downloads/sort-puzzle.apk` (1.0.1 now). The folder is gitignored, so copy each new release there before building | the `apk` entry in `STORES` |
 | The studio's links (Telegram, Instagram, website…), shown on its card and in the footer. Set `logo` to show the studio's logo instead of the puzzle piece | `STUDIO` in `src/studio/studio.ts` |
 | English store badges: the English pages show the Persian ones until you add them | `badge.en` on each store in `STORES` |
 
