@@ -1,10 +1,11 @@
 import { Gamepad2, Heart } from 'lucide-react'
 import { useRef, type CSSProperties } from 'react'
 import { Button3D } from '../../components/Button3D'
+import { CandyBall } from '../../components/CandyBall'
 import { Coin3D } from '../../components/Coin3D'
 import { Depth } from '../../components/Depth'
-import { PuzzlePiece } from '../../components/PuzzlePiece'
 import { Sparkle } from '../../components/Sparkle'
+import { StudioLogo } from '../../components/StudioLogo'
 import { Title3D } from '../../components/Title3D'
 import { Wave } from '../../components/Wave'
 import { usePointerParallax } from '../../hooks/usePointerParallax'
@@ -34,11 +35,7 @@ export function StudioHero() {
           {t.hero.eyebrow}
         </span>
 
-        <div className="relative mx-auto mt-8 w-fit">
-          <PuzzlePiece className="w-32 animate-bob-slow drop-shadow-[0_18px_22px_rgba(20,8,60,0.45)] sm:w-40" />
-          <Sparkle size={28} className="absolute -top-3 -right-5" style={{ animationDelay: '0.6s' }} />
-          <Sparkle size={18} className="absolute bottom-3 -left-6" style={{ animationDelay: '1.5s' }} />
-        </div>
+        <StudioLogo lively className="mx-auto mt-8 block w-28 animate-bob-slow drop-shadow-[0_18px_22px_rgba(20,8,60,0.45)] sm:w-32" />
 
         <Title3D as="h1" className="mt-5 block text-[3.2rem] leading-[1.3] sm:text-7xl md:text-[5.5rem]">
           {STUDIO.name[locale]}
@@ -72,28 +69,28 @@ export function StudioHero() {
   )
 }
 
-/** Puzzle pieces, coins and sparkles floating around the title, drifting with the pointer. */
+/** Candy balls like the logo's dots, coins and sparkles floating around the title, drifting with the pointer. */
 function HeroDecor() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
       <Depth depth={-26} className="top-[20%] left-[5%] hidden md:block">
         <div className="animate-float" style={{ '--r': '-16deg' } as CSSProperties}>
-          <PuzzlePiece tone="pink" className="w-24 lg:w-28" />
+          <CandyBall tone="pink" className="w-16 lg:w-[4.5rem]" />
         </div>
       </Depth>
       <Depth depth={30} className="top-[15%] right-[7%] hidden md:block">
         <div className="animate-float" style={{ '--r': '14deg', animationDelay: '-3s' } as CSSProperties}>
-          <PuzzlePiece tone="aqua" className="w-20 lg:w-24" />
+          <CandyBall tone="aqua" className="w-12 lg:w-14" />
         </div>
       </Depth>
       <Depth depth={18} className="top-[50%] right-[4%] hidden lg:block">
         <div className="animate-float" style={{ '--r': '-10deg', animationDelay: '-1.5s' } as CSSProperties}>
-          <PuzzlePiece tone="leaf" className="w-[4.5rem]" />
+          <CandyBall tone="leaf" className="w-11" />
         </div>
       </Depth>
       <Depth depth={-38} className="top-[55%] left-[8%] hidden lg:block">
         <div className="animate-float" style={{ '--r': '22deg', animationDelay: '-4.5s' } as CSSProperties}>
-          <PuzzlePiece tone="orange" className="w-[4.2rem]" />
+          <CandyBall tone="orange" className="w-10" />
         </div>
       </Depth>
       <Depth depth={24} className="top-[34%] right-[20%] hidden xl:block">

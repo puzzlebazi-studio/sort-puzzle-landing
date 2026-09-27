@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Button3D } from '../../components/Button3D'
+import { CandyBall } from '../../components/CandyBall'
 import { PhoneFrame } from '../../components/PhoneFrame'
-import { PuzzlePiece } from '../../components/PuzzlePiece'
 import { Reveal } from '../../components/Reveal'
 import { SectionHeading } from '../../components/SectionHeading'
 import { Sparkle } from '../../components/Sparkle'
@@ -30,7 +30,7 @@ export function Games() {
         </ul>
         <Reveal className="mt-12">
           <div className="flex flex-col items-center gap-4 rounded-[1.75rem] border-[3px] border-dashed border-white/30 bg-white/5 px-6 py-7 text-center sm:flex-row sm:gap-6 sm:px-8 sm:text-start">
-            <PuzzlePiece tone="grape" label="?" className="w-20 shrink-0 animate-bob" />
+            <CandyBall tone="grape" label="?" className="w-16 shrink-0 animate-bob" />
             <div>
               <h3 className="text-2xl text-gold-300 text-outline-sm">{t.games.next.title}</h3>
               <p className="mt-1 text-lg leading-8 text-grape-100">{t.games.next.text}</p>

@@ -4,8 +4,8 @@ import { localePath } from '../i18n/locales'
 import { UI } from '../i18n/ui'
 import { useLocale } from '../i18n/useLocale'
 import { Button3D } from './Button3D'
+import { CandyBall } from './CandyBall'
 import { LanguageSwitch } from './LanguageSwitch'
-import { PuzzlePiece } from './PuzzlePiece'
 import { Sparkle } from './Sparkle'
 import { Title3D } from './Title3D'
 
@@ -22,7 +22,7 @@ export function MessagePage({ heading, title, text }: MessagePageProps) {
   return (
     <main id="main" className="page-bg flex min-h-dvh flex-col items-center justify-center px-4 py-20 text-center">
       <div className="relative">
-        <PuzzlePiece tone="grape" label="?" className="w-36 animate-bob drop-shadow-[0_16px_18px_rgba(12,4,40,0.4)]" />
+        <CandyBall tone="grape" label="?" className="w-32 animate-bob drop-shadow-[0_16px_18px_rgba(12,4,40,0.4)]" />
         <Sparkle size={26} className="absolute -top-2 -right-4" />
         <Sparkle size={18} className="absolute bottom-6 -left-6" style={{ animationDelay: '1.3s' }} />
       </div>

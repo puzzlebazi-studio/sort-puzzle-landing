@@ -61,7 +61,7 @@ caching (a year for the build's content-hashed `assets/`).
 | --- | --- |
 | The site's address, `https://puzzlebazi.studio`. Share previews need it for absolute image URLs, and it adds canonical and language links for search engines. Change it if the domain changes | `SITE_URL` in `src/site.ts` |
 | Cafe Bazaar and Myket links use the game's package, `com.sortpuzzle.game`. They show «یافت نشد» until the listing is published | `PACKAGE_NAME` in `src/games/sort-puzzle/stores.ts` |
-| The studio's links (Telegram, Instagram, website…), shown on its card and in the footer. Set `logo` to show the studio's logo instead of the puzzle piece | `STUDIO` in `src/studio/studio.ts` |
+| The studio's links (Telegram, Instagram, website…), shown on its card and in the footer | `STUDIO` in `src/studio/studio.ts` |
 | English store badges: the English pages show the Persian ones until you add them | `badge.en` on each store in `STORES` |
 
 The store badges are the official ones in `public/` (`cafebazaar-logo-badge.png`,
@@ -81,7 +81,7 @@ proportions and line up at one height. To replace or add one, crop it the same w
    `public/<slug>/`.
 
 The shared building blocks are in `src/components/`: the navbar, footer and language switch, the
-game-style buttons and cards, the studio card and the store badges.
+game-style buttons and cards, the studio's logo and card, and the store badges.
 
 ## Where things live
 
@@ -108,6 +108,33 @@ game-style buttons and cards, the studio card and the store badges.
 Persian pages are right to left and English ones left to right; sections that point somewhere
 (the carousel, the arrows between the how-to-play steps) follow the page's direction.
 
+## The logo
+
+The studio's logo is «پ», the first letter of پازل‌بازی, in the extruded gold of the titles, with its
+three dots as candy balls (pink, aqua and leaf). On the site it is `StudioLogo`
+(`src/components/StudioLogo.tsx`). Its dots are `Ball`s from `CandyBall.tsx`, which also float around
+the studio's hero, and `StudioMark` sets the logo beside the studio's short name in the navbar and
+footer.
+
+`brand/` holds it as files for use off the site (nothing there is deployed):
+
+| File | Use |
+| --- | --- |
+| `puzzlebazi-logo-512.png` | Profile picture for Telegram, Instagram and the like: the logo on the studio's violet, edge to edge, inside the circle those sites crop to |
+| `puzzlebazi-mark-512.png` | The logo alone on a transparent background, for posts and videos |
+| `puzzlebazi-logo.svg`, `puzzlebazi-mark.svg` | Their sources |
+| `aparat-cover-2200x245.png` | The Aparat channel's cover (9:1, under Aparat's 4 MB limit): the logo, name and tagline in the middle, where phones keep it |
+
+The two SVGs and `public/favicon.svg` repeat the shapes in `StudioLogo.tsx`, so change them together.
+The Aparat cover was rendered from the site's own components, like the share previews.
+For a PNG at another size, set the SVG's `width` and `height` to it and screenshot the SVG in Chrome
+at that window size (add `--default-background-color=00000000` for the transparent one):
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --force-device-scale-factor=1 \
+  --window-size=512,512 --screenshot="$PWD/brand/puzzlebazi-logo-512.png" "file://$PWD/brand/puzzlebazi-logo.svg"
+```
+
 ## Assets
 
 Taken from the Unity project and converted for the web:
@@ -123,8 +150,7 @@ Taken from the Unity project and converted for the web:
 - `src/games/sort-puzzle/assets/mechanics/*.webp`: close-ups cropped from those captures.
 - `public/fonts/Lalezar-Regular.woff2`: the supplied Lalezar TTF, compressed to WOFF2 with every
   glyph and OpenType feature kept. Lalezar is licensed under the SIL Open Font License 1.1.
-- `public/og/*.jpg` (share previews), `public/apple-touch-icon.png` and
-  `public/sort-puzzle/apple-touch-icon.png` were rendered from the site's own components. Re-render
-  them if a hero changes.
-- `public/favicon.svg` is the studio's puzzle piece; `public/sort-puzzle/favicon.svg` is the
-  game's bottle.
+- `public/og/*.jpg` (share previews) and `public/sort-puzzle/apple-touch-icon.png` were rendered
+  from the site's own components. Re-render them if a hero changes.
+- `public/favicon.svg` is the studio's logo on a violet tile, and `public/apple-touch-icon.png` is
+  `brand/puzzlebazi-logo.svg` at 180 × 180. `public/sort-puzzle/favicon.svg` is the game's bottle.
