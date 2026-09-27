@@ -142,15 +142,17 @@ Taken from the Unity project and converted for the web:
 - `src/games/sort-puzzle/assets/logo-title.webp`, `star-full.webp`: `Assets/SortFactory/Art/UI`
   (lossless WebP). The logo spells the Persian name, so the English page sets "Sort Puzzle" in the
   same gold lettering instead.
-- `src/games/sort-puzzle/assets/icon.webp`: the store icon (`ArtSource/Icon/icon_store_512.png`) at
-  256 × 256.
+- `src/games/sort-puzzle/assets/icon.webp`: the game's icon (`brand/icon_full.png`, 1024 × 1024) at
+  256 × 256. The game's page also shows it in the middle of its QR code, in its tab
+  (`public/sort-puzzle/favicon.svg`: a 64 × 64 copy on the same rounded tile as the studio's) and on
+  phones' home screens (`public/sort-puzzle/apple-touch-icon.png`, 180 × 180).
 - `src/games/sort-puzzle/assets/shots/*.webp`: captured at 1080×1920 from the real Game scene in
   Unity PlayMode (the same way as `GameViewTests`' screenshots), for a player at stage 128 and on
   stages 725, 926 and 956, then scaled to 720×1280.
 - `src/games/sort-puzzle/assets/mechanics/*.webp`: close-ups cropped from those captures.
 - `public/fonts/Lalezar-Regular.woff2`: the supplied Lalezar TTF, compressed to WOFF2 with every
   glyph and OpenType feature kept. Lalezar is licensed under the SIL Open Font License 1.1.
-- `public/og/*.jpg` (share previews) and `public/sort-puzzle/apple-touch-icon.png` were rendered
-  from the site's own components. Re-render them if a hero changes.
+- `public/og/*.jpg` (share previews) were rendered from the site's own components. Re-render them if
+  a hero changes.
 - `public/favicon.svg` is the studio's logo on a violet tile, and `public/apple-touch-icon.png` is
-  `brand/puzzlebazi-logo.svg` at 180 × 180. `public/sort-puzzle/favicon.svg` is the game's bottle.
+  `brand/puzzlebazi-logo.svg` at 180 × 180.

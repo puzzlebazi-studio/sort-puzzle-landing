@@ -8,14 +8,16 @@ import { Sparkle } from '../../../components/Sparkle'
 import { StoreBadge } from '../../../components/StoreBadge'
 import { Title3D } from '../../../components/Title3D'
 import { formatNumber } from '../../../i18n/format'
+import icon from '../assets/icon.webp'
 import homeShot from '../assets/shots/home.webp'
 import { useContent } from '../content'
 import { BAZAAR, MIN_ANDROID, STORES } from '../stores'
 
-/** A small bottle badge in the middle of the QR code. */
-const QR_BADGE = `data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect x="1.5" y="1.5" width="37" height="37" rx="10" fill="#ffc93c" stroke="#3a1500" stroke-width="3"/><path d="M15 10h10v17a5 5 0 0 1-10 0z" fill="#fff" stroke="#3a1500" stroke-width="2.5" stroke-linejoin="round"/><path d="M16.3 20h7.4v7a3.7 3.7 0 0 1-7.4 0z" fill="#ff3b47"/><rect x="13" y="8" width="14" height="4" rx="2" fill="#dbeaff" stroke="#3a1500" stroke-width="2"/></svg>',
-)}`
+/**
+ * Clears the middle of the QR code for the game's icon, which is laid on top with rounded corners.
+ * An empty image, so nothing downloads where the code is hidden.
+ */
+const QR_HOLE = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"/%3E'
 
 export function Download() {
   const { locale, t, name } = useContent()
@@ -65,17 +67,28 @@ export function Download() {
                   style={{ '--r': '4deg' } as CSSProperties}
                 >
                   <div className="rounded-2xl border-[3px] border-choco bg-white p-2.5">
-                    <QRCodeSVG
-                      value={BAZAAR.href}
-                      size={168}
-                      level="H"
-                      fgColor="#3a1500"
-                      bgColor="#ffffff"
-                      marginSize={0}
-                      title={`${BAZAAR.name[locale]}: ${name}`}
-                      imageSettings={{ src: QR_BADGE, width: 40, height: 40, excavate: true }}
-                      className="h-auto w-full"
-                    />
+                    <div className="relative">
+                      <QRCodeSVG
+                        value={BAZAAR.href}
+                        size={168}
+                        level="H"
+                        fgColor="#3a1500"
+                        bgColor="#ffffff"
+                        marginSize={0}
+                        title={`${BAZAAR.name[locale]}: ${name}`}
+                        imageSettings={{ src: QR_HOLE, width: 46, height: 46, excavate: true }}
+                        className="block h-auto w-full"
+                      />
+                      <img
+                        src={icon}
+                        alt=""
+                        width={256}
+                        height={256}
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute top-1/2 left-1/2 w-1/4 -translate-x-1/2 -translate-y-1/2 rounded-[24%] border-2 border-choco"
+                      />
+                    </div>
                   </div>
                   <p className="mt-3 text-lg">{t.download.scan}</p>
                 </div>
