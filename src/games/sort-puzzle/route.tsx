@@ -1,5 +1,3 @@
-import { Download as DownloadIcon } from 'lucide-react'
-import { Button3D } from '../../components/Button3D'
 import { Navbar } from '../../components/Navbar'
 import { SiteFooter } from '../../components/SiteFooter'
 import { DEFAULT_LOCALE, isLocale } from '../../i18n/locales'
@@ -43,22 +41,7 @@ export default function SortPuzzlePage() {
   const { locale, t, name } = useContent()
   return (
     <>
-      <Navbar
-        brand={<GameLogo size="nav" />}
-        links={SECTIONS.map((id) => ({ href: `#${id}`, label: t.nav[id] }))}
-        action={
-          <Button3D
-            href="#download"
-            size="sm"
-            tone="leaf"
-            // The smallest phones only have room for the icon.
-            className="max-[24rem]:gap-0 max-[24rem]:px-3"
-            icon={<DownloadIcon className="size-5" strokeWidth={3} aria-hidden="true" />}
-          >
-            <span className="max-[24rem]:sr-only">{t.download.nav}</span>
-          </Button3D>
-        }
-      />
+      <Navbar brand={<GameLogo size="nav" />} links={SECTIONS.map((id) => ({ href: `#${id}`, label: t.nav[id] }))} />
       <main id="main" className="overflow-x-clip">
         <Hero />
         <div className="page-bg">

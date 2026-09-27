@@ -171,7 +171,6 @@ export const en: SortPuzzleContent = {
   },
 
   download: {
-    nav: 'Download',
     eyebrow: 'Free for Android',
     title: 'Ready? Download it!',
     text: 'Install Sort Puzzle for free from Cafe Bazaar or Myket right now and start your first stage in seconds!',

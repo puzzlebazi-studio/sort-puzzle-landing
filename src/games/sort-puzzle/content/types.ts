@@ -70,8 +70,6 @@ export interface SortPuzzleContent {
     visit: string
   }
   download: {
-    /** The navbar button. */
-    nav: string
     eyebrow: string
     title: string
     text: string

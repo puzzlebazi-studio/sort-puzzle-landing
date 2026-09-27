@@ -16,11 +16,9 @@ interface NavbarProps {
   /** The logo at the start of the bar; it links back to the top of the page. */
   brand: ReactNode
   links: NavLink[]
-  /** A button at the end of the bar, like "Download". */
-  action?: ReactNode
 }
 
-export function Navbar({ brand, links, action }: NavbarProps) {
+export function Navbar({ brand, links }: NavbarProps) {
   const ui = UI[useLocale()]
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -84,7 +82,6 @@ export function Navbar({ brand, links, action }: NavbarProps) {
           <div className="hidden sm:block">
             <LanguageSwitch />
           </div>
-          {action}
           <button
             type="button"
             className={cn('icon-3d tone-grape size-11 cursor-pointer', inline.hide)}
