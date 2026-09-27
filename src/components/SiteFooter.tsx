@@ -13,13 +13,12 @@ import { Wave } from './Wave'
 
 export interface FooterLink {
   label: string
-  /** A section of this page ("#faq"), a file or another site. */
+  /** A section of this page ("#faq") or another site. */
   href?: string
   /** A page of this site. */
   to?: string
   /** Shown greyed out with "soon", not as a link. */
   soon?: boolean
-  download?: boolean
 }
 
 export interface FooterColumn {
@@ -137,7 +136,6 @@ function FooterItem({ link, soon }: { link: FooterLink; soon: string }) {
       href={link.href}
       className={LINK}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      {...(link.download ? { download: '' } : {})}
     >
       {link.label}
     </a>

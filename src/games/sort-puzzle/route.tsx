@@ -85,7 +85,6 @@ export default function SortPuzzlePage() {
               label: store.name[locale],
               href: store.href,
               soon: store.comingSoon,
-              download: !store.href.startsWith('http'),
             })),
           },
         ]}

@@ -1,7 +1,6 @@
-import { BadgeCheck, Download as DownloadIcon, Smartphone, WifiOff } from 'lucide-react'
+import { BadgeCheck, Smartphone, WifiOff } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import type { CSSProperties } from 'react'
-import { Button3D } from '../../../components/Button3D'
 import { Coin3D } from '../../../components/Coin3D'
 import { PhoneFrame } from '../../../components/PhoneFrame'
 import { Reveal } from '../../../components/Reveal'
@@ -11,7 +10,7 @@ import { Title3D } from '../../../components/Title3D'
 import { formatNumber } from '../../../i18n/format'
 import homeShot from '../assets/shots/home.webp'
 import { useContent } from '../content'
-import { APK, BAZAAR, MIN_ANDROID, STORES } from '../stores'
+import { BAZAAR, MIN_ANDROID, STORES } from '../stores'
 
 /** A small bottle badge in the middle of the QR code. */
 const QR_BADGE = `data:image/svg+xml,${encodeURIComponent(
@@ -43,17 +42,6 @@ export function Download() {
                   {STORES.map((store) => (
                     <StoreBadge key={store.id} store={store} height="3.6rem" />
                   ))}
-                </div>
-                <div className="mt-5 flex justify-center lg:justify-start">
-                  <Button3D
-                    href={APK.href}
-                    download=""
-                    tone="cream"
-                    size="sm"
-                    icon={<DownloadIcon className="size-5" strokeWidth={3} aria-hidden="true" />}
-                  >
-                    {t.download.apk}
-                  </Button3D>
                 </div>
                 <ul className="mt-7 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {requirements.map(({ icon: Icon, text }) => (

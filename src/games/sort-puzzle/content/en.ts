@@ -4,7 +4,7 @@ export const en: SortPuzzleContent = {
   meta: {
     title: 'Sort Puzzle | A color-sorting puzzle game for Android',
     description:
-      'Sort Puzzle is a colorful brain teaser: pour liquids between bottles until each one holds a single color. 1,000+ stages, frozen and locked bottles, smart hints and daily rewards. Free on Cafe Bazaar.',
+      'Sort Puzzle is a colorful brain teaser: pour liquids between bottles until each one holds a single color. 1,000+ stages, frozen and locked bottles, smart hints and daily rewards. Free on Cafe Bazaar and Myket.',
     ogTitle: 'Sort Puzzle | Pour, sort, win!',
     ogDescription: 'A color-sorting puzzle game with 1,000+ stages and four fresh challenges. Free for Android.',
   },
@@ -174,8 +174,7 @@ export const en: SortPuzzleContent = {
     nav: 'Download',
     eyebrow: 'Free for Android',
     title: 'Ready? Download it!',
-    text: 'Install Sort Puzzle for free from Cafe Bazaar right now and start your first stage in seconds!',
-    apk: 'Download the APK file',
+    text: 'Install Sort Puzzle for free from Cafe Bazaar or Myket right now and start your first stage in seconds!',
     android: (version) => `Android ${version} or later`,
     free: 'Free',
     offline: 'No internet needed',
@@ -192,7 +191,7 @@ export const en: SortPuzzleContent = {
       },
       {
         q: 'Do I need the internet to play?',
-        a: 'No. The stages live inside the game, so you can play offline. You only need the internet and Cafe Bazaar for in-app purchases.',
+        a: 'No. The stages live inside the game, so you can play offline. You only need the internet and the store you installed it from (Cafe Bazaar or Myket) for in-app purchases.',
       },
       {
         q: 'What are frozen and locked bottles?',
@@ -212,7 +211,7 @@ export const en: SortPuzzleContent = {
       },
       {
         q: 'What happens to my purchases if I reinstall the game?',
-        a: '“Remove Ads” and the “Starter Pack” are tied to your Cafe Bazaar account and come back automatically after you reinstall.',
+        a: '“Remove Ads” and the “Starter Pack” are tied to your account on the store you bought them from (Cafe Bazaar or Myket) and come back automatically when you reinstall from that store.',
       },
       {
         q: 'Which phones does it run on?',

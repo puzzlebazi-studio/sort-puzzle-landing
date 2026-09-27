@@ -75,7 +75,6 @@ export interface SortPuzzleContent {
     eyebrow: string
     title: string
     text: string
-    apk: string
     android: (version: string) => string
     free: string
     offline: string

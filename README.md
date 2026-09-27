@@ -61,8 +61,6 @@ caching (a year for the build's content-hashed `assets/`).
 | --- | --- |
 | The site's address, `https://puzzlebazi.studio`. Share previews need it for absolute image URLs, and it adds canonical and language links for search engines. Change it if the domain changes | `SITE_URL` in `src/site.ts` |
 | Cafe Bazaar and Myket links use the game's package, `com.sortpuzzle.game`. They show «یافت نشد» until the listing is published | `PACKAGE_NAME` in `src/games/sort-puzzle/stores.ts` |
-| Myket is shown as «به‌زودی». In-app purchases use Bazaar's Poolakey SDK, so Myket needs its own billing first | `comingSoon` on the Myket entry in `STORES` |
-| Direct download: the signed release APK lives at `public/downloads/sort-puzzle.apk` (1.0.1 now). The folder is gitignored, so copy each new release there before building | the `apk` entry in `STORES` |
 | The studio's links (Telegram, Instagram, website…), shown on its card and in the footer. Set `logo` to show the studio's logo instead of the puzzle piece | `STUDIO` in `src/studio/studio.ts` |
 | English store badges: the English pages show the Persian ones until you add them | `badge.en` on each store in `STORES` |
 
@@ -99,7 +97,7 @@ game-style buttons and cards, the studio card and the store badges.
     colors, images and the numbers of the seven difficulty tiers and four special mechanics, which
     come from the game's production stage data
     (`Assets/SortFactory/Levels/Production/StageDatabase.asset`).
-  - `game.ts`: its card on the studio's home page. `stores.ts`: store links and the APK.
+  - `game.ts`: its card on the studio's home page. `stores.ts`: store links.
   - `sections/`: one component per section, in page order in `route.tsx`.
   - `components/tube/`: the SVG bottles. `lib/liquid.ts` works out each liquid layer for any tilt
     with its area kept constant, like the game's liquid shader. That is how the "pour"
