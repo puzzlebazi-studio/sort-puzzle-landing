@@ -6,3 +6,6 @@
 export const SITE_URL = 'https://puzzlebazi.studio'
 
 export const absoluteUrl = (path: string) => (SITE_URL ? new URL(path, SITE_URL).href : path)
+
+/** The site's Google Analytics (GA4) measurement ID; root.tsx puts Google's tag in every page's head. */
+export const GA_MEASUREMENT_ID = 'G-5G9GE0YWGD'

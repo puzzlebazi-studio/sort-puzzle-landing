@@ -7,6 +7,7 @@ import { useHashLinks } from './hooks/useHashLinks'
 import { DEFAULT_LOCALE, LOCALE_INFO } from './i18n/locales'
 import { UI } from './i18n/ui'
 import { useLocale } from './i18n/useLocale'
+import { GA_MEASUREMENT_ID } from './site'
 import { STUDIO } from './studio/studio'
 import './index.css'
 
@@ -19,6 +20,14 @@ export const links: Route.LinksFunction = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
   { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 ]
+
+// Google Analytics' tag, as Google gives it.
+const GTAG_INIT = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${GA_MEASUREMENT_ID}');
+`
 
 export function Layout({ children }: { children: ReactNode }) {
   const locale = useLocale()
@@ -37,6 +46,13 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="theme-color" content="#5540c8" />
+        {/* Only the built site has it, so visits to `pnpm dev` aren't counted. */}
+        {import.meta.env.PROD && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: GTAG_INIT }} />
+          </>
+        )}
         <Meta />
         <Links />
         {/* Without scripts nothing would reveal itself on scroll. */}

@@ -583,7 +583,7 @@
     transform: translateX(-50%);
   }
 
-  /* ---------- Official store badge (public/*-badge.png, all 421:125) ---------- */
+  /* ---------- Official store badge (public/*-badge-fa.png and -en.png, all 421:125) ---------- */
   .store-badge {
     --badge-h: 3.5rem;
     position: relative;

@@ -62,12 +62,12 @@ caching (a year for the build's content-hashed `assets/`).
 | The site's address, `https://puzzlebazi.studio`. Share previews need it for absolute image URLs, and it adds canonical and language links for search engines. Change it if the domain changes | `SITE_URL` in `src/site.ts` |
 | Cafe Bazaar and Myket links use the game's package, `com.sortpuzzle.game`. They show «یافت نشد» until the listing is published | `PACKAGE_NAME` in `src/games/sort-puzzle/stores.ts` |
 | The studio's links (Telegram, Instagram, website…), shown on its card and in the footer | `STUDIO` in `src/studio/studio.ts` |
-| English store badges: the English pages show the Persian ones until you add them | `badge.en` on each store in `STORES` |
+| Google Analytics' measurement ID. Only the built site has the tag, so visits to `pnpm dev` aren't counted | `GA_MEASUREMENT_ID` in `src/site.ts` |
 
-The store badges are the official ones in `public/` (`cafebazaar-logo-badge.png`,
-`myket-logo-badge.png`). Both are cropped to their edges, so they share the same 421:125
-proportions and line up at one height. To replace or add one, crop it the same way and set its
-`width` and `height`.
+The store badges are the official ones in `public/`, one per language: `cafebazaar-logo-badge-fa.png`
+and `-en.png`, `myket-logo-badge-fa.png` and `-en.png`. Each page shows its own language's. All are
+cropped to their edges, so they share the same 421:125 proportions and line up at one height. To
+replace or add one, crop it the same way and set its `width` and `height` in `STORES`.
 
 ## Adding a game
 
@@ -86,7 +86,7 @@ game-style buttons and cards, the studio's logo and card, and the store badges.
 ## Where things live
 
 - `src/routes.ts`: the pages. `src/root.tsx` is the HTML document: it sets `lang` and `dir` from
-  the address and holds the site's default icons.
+  the address and holds the site's default icons and the Google Analytics tag.
 - `src/i18n/`: the languages (`locales.ts`), number and year formatting (`format.ts`), words shared
   by every page (`ui.ts`) and each page's head tags (`meta.ts`).
 - `src/studio/`: the studio's name, intro and links (`studio.ts`), its home page's words in both
