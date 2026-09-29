@@ -7,7 +7,7 @@ import { CandyBall } from './CandyBall'
 import { SocialIcon } from './SocialIcon'
 import { Sparkle } from './Sparkle'
 import { StudioLogo } from './StudioLogo'
-import { Title3D } from './Title3D'
+import { StudioLogotype } from './StudioLogotype'
 
 const LINK_TONES: Tone[] = ['grape', 'aqua', 'pink', 'orange', 'sky']
 
@@ -20,19 +20,18 @@ interface StudioCardProps {
   action?: ReactNode
 }
 
-/** The studio's name, logo, a few words about it and its links. */
+/** The studio's icon and logotype, a few words about it and its links. */
 export function StudioCard({ role, story, action }: StudioCardProps) {
   const locale = useLocale()
-  const name = STUDIO.name[locale]
   return (
     <article className="card-3d px-6 pt-8 pb-8 sm:px-10 sm:pt-10 sm:pb-10">
       <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:gap-7 sm:text-start">
         <StudioAvatar />
         <div>
-          <Title3D as="h3" className="text-4xl">
-            {name}
-          </Title3D>
-          <p className="mt-1 text-lg text-choco-soft">{role}</p>
+          <h3>
+            <StudioLogotype size="card" onLight className="mx-auto sm:mx-0" />
+          </h3>
+          <p className="mt-2 text-lg text-choco-soft">{role}</p>
         </div>
       </div>
 

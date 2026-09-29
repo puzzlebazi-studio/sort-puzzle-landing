@@ -1,5 +1,6 @@
 import { Navbar } from '../components/Navbar'
 import { SiteFooter } from '../components/SiteFooter'
+import { StudioLogotype } from '../components/StudioLogotype'
 import { GAMES } from '../games/registry'
 import { DEFAULT_LOCALE, isLocale, localePath } from '../i18n/locales'
 import { notFoundMeta, pageMeta } from '../i18n/meta'
@@ -46,7 +47,7 @@ export default function StudioPage() {
         </div>
       </main>
       <SiteFooter
-        brand={<StudioMark large />}
+        brand={<StudioLogotype size="footer" />}
         blurb={t.footer.blurb}
         owner={STUDIO.name[locale]}
         columns={[

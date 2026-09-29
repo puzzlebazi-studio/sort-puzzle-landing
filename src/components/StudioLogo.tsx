@@ -13,8 +13,6 @@ const DOTS = [
 ] as const
 
 interface StudioLogoProps {
-  /** Makes the dots pop one after another. */
-  lively?: boolean
   className?: string
   style?: CSSProperties
 }
@@ -23,7 +21,7 @@ interface StudioLogoProps {
  * The studio's logo: «پ», the first letter of پازل‌بازی, in the extruded gold of the titles, with its
  * three dots as candy balls.
  */
-export function StudioLogo({ lively, className, style }: StudioLogoProps) {
+export function StudioLogo({ className, style }: StudioLogoProps) {
   const id = `logo-${useId().replace(/[^\w-]/g, '')}`
   return (
     <svg viewBox="0 0 105 122" className={cn('overflow-visible', className)} style={style} aria-hidden="true">
@@ -40,13 +38,8 @@ export function StudioLogo({ lively, className, style }: StudioLogoProps) {
         <path d={BOWL} stroke={`url(#${id})`} strokeWidth={21} />
         <path d="M86.8 20V16" stroke="#fff" strokeOpacity={0.8} strokeWidth={5.5} />
       </g>
-      {DOTS.map((dot, i) => (
-        <Ball
-          key={dot.tone}
-          {...dot}
-          className={lively ? 'origin-center transform-fill animate-dot-pop' : undefined}
-          style={lively ? { animationDelay: `${i * 0.22}s` } : undefined}
-        />
+      {DOTS.map((dot) => (
+        <Ball key={dot.tone} {...dot} />
       ))}
     </svg>
   )

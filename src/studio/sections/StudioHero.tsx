@@ -5,15 +5,14 @@ import { CandyBall } from '../../components/CandyBall'
 import { Coin3D } from '../../components/Coin3D'
 import { Depth } from '../../components/Depth'
 import { Sparkle } from '../../components/Sparkle'
-import { StudioLogo } from '../../components/StudioLogo'
+import { StudioLogotype } from '../../components/StudioLogotype'
 import { Title3D } from '../../components/Title3D'
 import { Wave } from '../../components/Wave'
 import { usePointerParallax } from '../../hooks/usePointerParallax'
 import { useStudioContent } from '../content'
-import { STUDIO } from '../studio'
 
 export function StudioHero() {
-  const { locale, t } = useStudioContent()
+  const { t } = useStudioContent()
   const ref = useRef<HTMLElement>(null)
   usePointerParallax(ref)
 
@@ -35,13 +34,11 @@ export function StudioHero() {
           {t.hero.eyebrow}
         </span>
 
-        <StudioLogo lively className="mx-auto mt-8 block w-28 animate-bob-slow drop-shadow-[0_18px_22px_rgba(20,8,60,0.45)] sm:w-32" />
+        <h1 className="mt-7">
+          <StudioLogotype size="hero" priority className="mx-auto animate-bob-slow drop-shadow-[0_18px_22px_rgba(20,8,60,0.45)]" />
+        </h1>
 
-        <Title3D as="h1" className="mt-5 block text-[3.2rem] leading-[1.3] sm:text-7xl md:text-[5.5rem]">
-          {STUDIO.name[locale]}
-        </Title3D>
-
-        <Title3D as="p" tone="white" className="mt-2 text-2xl sm:text-3xl md:text-4xl">
+        <Title3D as="p" tone="white" className="mt-4 text-2xl sm:text-3xl md:text-4xl">
           {t.hero.tagline}
         </Title3D>
 

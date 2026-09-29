@@ -81,7 +81,7 @@ replace or add one, crop it the same way and set its `width` and `height` in `ST
    `public/<slug>/`.
 
 The shared building blocks are in `src/components/`: the navbar, footer and language switch, the
-game-style buttons and cards, the studio's logo and card, and the store badges.
+game-style buttons and cards, the studio's icon, logotype and card, and the store badges.
 
 ## Where things live
 
@@ -90,7 +90,7 @@ game-style buttons and cards, the studio's logo and card, and the store badges.
 - `src/i18n/`: the languages (`locales.ts`), number and year formatting (`format.ts`), words shared
   by every page (`ui.ts`) and each page's head tags (`meta.ts`).
 - `src/studio/`: the studio's name, intro and links (`studio.ts`), its home page's words in both
-  languages (`content.ts`) and sections.
+  languages (`content.ts`), its logotypes (`assets/`) and sections.
 - `src/games/sort-puzzle/`:
   - `content/fa.ts` and `content/en.ts`: every word on the page, one file per language, both
     checked against the same type. `content/index.ts` holds what the languages share: icons,
@@ -110,25 +110,42 @@ Persian pages are right to left and English ones left to right; sections that po
 
 ## The logo
 
-The studio's logo is «پ», the first letter of پازل‌بازی, in the extruded gold of the titles, with its
-three dots as candy balls (pink, aqua and leaf). On the site it is `StudioLogo`
-(`src/components/StudioLogo.tsx`). Its dots are `Ball`s from `CandyBall.tsx`, which also float around
-the studio's hero, and `StudioMark` sets the logo beside the studio's short name in the navbar and
-footer.
+The studio has an icon and a logotype.
 
-`brand/` holds it as files for use off the site (nothing there is deployed):
+The icon is «پ», the first letter of پازل‌بازی, in the extruded gold of the titles, with its three
+dots as candy balls (pink, aqua and leaf). On the site it is `StudioLogo`
+(`src/components/StudioLogo.tsx`): the studio page's navbar (`StudioMark`), the picture on the
+studio's card and the site's icons. Its dots are `Ball`s from `CandyBall.tsx`, which also float
+around the studio's hero.
+
+The logotype is the studio's name, drawn for each language: پازل‌بازی with candy balls for dots and
+a small "studio" under its end, or "PUZZLE BAZI Studio". `StudioLogotype`
+(`src/components/StudioLogotype.tsx`) shows it as the studio's hero, in its footer and on its card,
+and the studio's share previews and Aparat cover have it too. Its small word is black, for light
+backgrounds like the card. Everywhere else is violet, so the site also has copies with the small
+word in white (`src/studio/assets/*-on-dark.svg`). After changing a logotype in `brand/`, copy it
+again and remake its white copy (the small word is the only thing filled black; the outlines are
+strokes):
+
+```bash
+cp brand/puzzlebazi-logotype-fa.svg src/studio/assets/logotype-fa.svg
+sed 's/fill="black"/fill="white"/g' brand/puzzlebazi-logotype-fa.svg > src/studio/assets/logotype-fa-on-dark.svg
+```
+
+`brand/` holds them as files for use off the site (nothing there is deployed):
 
 | File | Use |
 | --- | --- |
-| `puzzlebazi-logo-512.png` | Profile picture for Telegram, Instagram and the like: the logo on the studio's violet, edge to edge, inside the circle those sites crop to |
-| `puzzlebazi-mark-512.png` | The logo alone on a transparent background, for posts and videos |
+| `puzzlebazi-logo-512.png` | Profile picture for Telegram, Instagram and the like: the icon on the studio's violet, edge to edge, inside the circle those sites crop to |
+| `puzzlebazi-mark-512.png` | The icon alone on a transparent background, for posts and videos |
 | `puzzlebazi-logo.svg`, `puzzlebazi-mark.svg` | Their sources |
-| `aparat-cover-2200x245.png` | The Aparat channel's cover (9:1, under Aparat's 4 MB limit): the logo, name and tagline in the middle, where phones keep it |
+| `puzzlebazi-logotype-fa.svg`, `puzzlebazi-logotype-en.svg` | The logotype in each language, for light backgrounds |
+| `aparat-cover-2200x245.png` | The Aparat channel's cover (9:1, under Aparat's 4 MB limit): the logotype and tagline in the middle, where phones keep it |
 
-The two SVGs and `public/favicon.svg` repeat the shapes in `StudioLogo.tsx`, so change them together.
-The Aparat cover was rendered from the site's own components, like the share previews.
-For a PNG at another size, set the SVG's `width` and `height` to it and screenshot the SVG in Chrome
-at that window size (add `--default-background-color=00000000` for the transparent one):
+The icon's two SVGs and `public/favicon.svg` repeat the shapes in `StudioLogo.tsx`, so change them
+together. The Aparat cover was rendered from the site's own components, like the share previews.
+For a PNG of the icon at another size, set the SVG's `width` and `height` to it and screenshot the
+SVG in Chrome at that window size (add `--default-background-color=00000000` for the transparent one):
 
 ```bash
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --force-device-scale-factor=1 \
@@ -154,5 +171,5 @@ Taken from the Unity project and converted for the web:
   glyph and OpenType feature kept. Lalezar is licensed under the SIL Open Font License 1.1.
 - `public/og/*.jpg` (share previews) were rendered from the site's own components. Re-render them if
   a hero changes.
-- `public/favicon.svg` is the studio's logo on a violet tile, and `public/apple-touch-icon.png` is
+- `public/favicon.svg` is the studio's icon on a violet tile, and `public/apple-touch-icon.png` is
   `brand/puzzlebazi-logo.svg` at 180 × 180.
