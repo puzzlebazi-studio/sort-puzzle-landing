@@ -1,16 +1,14 @@
 import { BadgeCheck, Smartphone, WifiOff } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import type { CSSProperties } from 'react'
-import { Coin3D } from '../../../components/Coin3D'
-import { PhoneFrame } from '../../../components/PhoneFrame'
 import { Reveal } from '../../../components/Reveal'
-import { Sparkle } from '../../../components/Sparkle'
 import { StoreBadge } from '../../../components/StoreBadge'
-import { Title3D } from '../../../components/Title3D'
 import { formatNumber } from '../../../i18n/format'
-import icon from '../assets/icon.webp'
+import icon from '../assets/icon.svg'
 import homeShot from '../assets/shots/home.webp'
+import { Chest, Coin, FlatSparkle } from '../components/art/Decor'
 import { useContent } from '../content'
+import { PLUM } from '../lib/palette'
 import { BAZAAR, MIN_ANDROID, STORES } from '../stores'
 
 /**
@@ -29,28 +27,22 @@ export function Download() {
 
   return (
     <section id="download" className="relative py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-4">
+      <div className="mx-auto max-w-6xl px-3 sm:px-4">
         <Reveal>
-          <div className="gold-panel relative isolate overflow-hidden rounded-[2.5rem] px-6 pt-12 pb-12 sm:px-10 lg:px-14">
-            <div aria-hidden="true" className="absolute inset-0 -z-10 [background-image:var(--pattern)] [background-size:240px] opacity-80" />
+          <div className="sticker sticker--lg sunburst sun-butter relative isolate overflow-hidden px-6 pt-12 pb-12 sm:px-10 lg:px-14" style={{ '--sun-at': '78% 50%' } as CSSProperties}>
             <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
               <div className="text-center lg:text-start">
-                <span className="eyebrow tone-red">{t.download.eyebrow}</span>
-                <Title3D tone="cream" className="mt-5 block text-[2.5rem] leading-tight sm:text-5xl lg:text-[3.6rem]">
-                  {t.download.title}
-                </Title3D>
-                <p className="mx-auto mt-4 max-w-lg text-xl leading-9 text-choco lg:mx-0">{t.download.text}</p>
+                <span className="flat-chip face-coral">{t.download.eyebrow}</span>
+                <h2 className="stroke-text mt-5 text-[2.6rem] leading-tight text-paper sm:text-5xl lg:text-[3.6rem]">{t.download.title}</h2>
+                <p className="mx-auto mt-4 max-w-lg text-xl leading-9 lg:mx-0">{t.download.text}</p>
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                   {STORES.map((store) => (
-                    <StoreBadge key={store.id} store={store} height="3.6rem" />
+                    <StoreBadge key={store.id} store={store} height="3.6rem" place="download" />
                   ))}
                 </div>
-                <ul className="mt-7 flex flex-wrap justify-center gap-2 lg:justify-start">
+                <ul className="mt-7 flex flex-wrap justify-center gap-2.5 lg:justify-start">
                   {requirements.map(({ icon: Icon, text }) => (
-                    <li
-                      key={text}
-                      className="inline-flex items-center gap-2 rounded-full border-[2.5px] border-choco bg-cream px-3.5 pt-1 pb-1.5 text-base text-choco shadow-[0_3px_0_rgb(58_21_0/0.35)]"
-                    >
+                    <li key={text} className="flat-chip">
                       <Icon className="size-4.5" strokeWidth={2.6} aria-hidden="true" />
                       {text}
                     </li>
@@ -58,21 +50,22 @@ export function Download() {
                 </ul>
               </div>
 
-              <div className="relative mx-auto hidden h-[27rem] w-full max-w-sm md:block" aria-hidden="true">
-                <div className="absolute top-0 left-2 w-52 [transform:perspective(1000px)_rotateY(22deg)_rotateZ(-6deg)]">
-                  <PhoneFrame src={homeShot} alt="" />
+              <div className="relative mx-auto hidden h-108 w-full max-w-sm md:block" aria-hidden="true">
+                <div className="absolute top-0 left-2 w-52 -rotate-6">
+                  <div className="flat-phone">
+                    <div className="flat-phone__screen">
+                      <img src={homeShot} alt="" width={720} height={1280} loading="lazy" decoding="async" />
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="card-3d absolute right-0 bottom-4 w-60 animate-float px-5 pt-5 pb-4 text-center"
-                  style={{ '--r': '4deg' } as CSSProperties}
-                >
-                  <div className="rounded-2xl border-[3px] border-choco bg-white p-2.5">
+                <div className="sticker absolute right-0 bottom-4 w-60 rotate-4 px-5 pt-5 pb-4 text-center">
+                  <div className="rounded-2xl border-[3px] border-plum bg-white p-2.5">
                     <div className="relative">
                       <QRCodeSVG
                         value={BAZAAR.href}
                         size={168}
                         level="H"
-                        fgColor="#3a1500"
+                        fgColor={PLUM}
                         bgColor="#ffffff"
                         marginSize={0}
                         title={`${BAZAAR.name[locale]}: ${name}`}
@@ -82,19 +75,20 @@ export function Download() {
                       <img
                         src={icon}
                         alt=""
-                        width={256}
-                        height={256}
+                        width={512}
+                        height={512}
                         loading="lazy"
                         decoding="async"
-                        className="absolute top-1/2 left-1/2 w-1/4 -translate-x-1/2 -translate-y-1/2 rounded-[24%] border-2 border-choco"
+                        className="absolute top-1/2 left-1/2 w-1/4 -translate-x-1/2 -translate-y-1/2 rounded-[24%] border-2 border-plum"
                       />
                     </div>
                   </div>
-                  <p className="mt-3 text-lg">{t.download.scan}</p>
+                  <p className="mt-3 text-lg font-bold">{t.download.scan}</p>
                 </div>
-                <Coin3D size={58} speed={4} className="absolute top-[17%] right-3" />
-                <Sparkle size={26} className="absolute top-4 right-16" />
-                <Sparkle size={18} className="absolute bottom-2 left-10" style={{ animationDelay: '1.2s' }} />
+                <Chest className="absolute -top-2 right-4 w-28 rotate-6 animate-float" />
+                <Coin className="absolute top-[22%] left-[52%] w-11 animate-float [animation-delay:-1.5s]" />
+                <FlatSparkle size={28} className="absolute top-[2%] left-[56%]" />
+                <FlatSparkle size={18} className="absolute bottom-2 left-10" style={{ animationDelay: '1.2s' }} />
               </div>
             </div>
           </div>

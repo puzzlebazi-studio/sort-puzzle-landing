@@ -2,17 +2,20 @@ import type { CSSProperties } from 'react'
 import type { Store } from '../games/types'
 import { UI } from '../i18n/ui'
 import { useLocale } from '../i18n/useLocale'
+import { track, type Place } from '../lib/analytics'
 import { cn } from '../lib/cn'
 
 interface StoreBadgeProps {
   store: Store
   /** Badge height; every badge has the same proportions, so they line up side by side. */
   height?: string
+  /** Where on the page it is, for analytics. */
+  place: Place
   className?: string
 }
 
 /** The store's official "get it on" badge, lifting like the page's buttons. Renders nothing for a store without one. */
-export function StoreBadge({ store, height, className }: StoreBadgeProps) {
+export function StoreBadge({ store, height, place, className }: StoreBadgeProps) {
   const locale = useLocale()
   const badge = store.badge?.[locale] ?? store.badge?.fa
   if (!badge) return null
@@ -41,7 +44,14 @@ export function StoreBadge({ store, height, className }: StoreBadgeProps) {
     )
   }
   return (
-    <a href={store.href} target="_blank" rel="noopener noreferrer" className={cn('store-badge', className)} style={style}>
+    <a
+      href={store.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn('store-badge', className)}
+      style={style}
+      onClick={() => track('store_click', { store: store.id, place })}
+    >
       {image}
     </a>
   )

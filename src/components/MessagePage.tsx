@@ -35,7 +35,7 @@ export function MessagePage({ heading, title, text }: MessagePageProps) {
         <Button3D to={localePath(locale)} tone="gold" icon={<House className="size-5" strokeWidth={3} aria-hidden="true" />}>
           {UI[locale].backHome}
         </Button3D>
-        <LanguageSwitch size="lg" />
+        <LanguageSwitch size="lg" place="message" />
       </div>
     </main>
   )

@@ -1,9 +1,10 @@
 import { useEffect, type ReactNode } from 'react'
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation, useMatches } from 'react-router'
 import type { Route } from './+types/root'
 import { MessagePage, NotFoundPage } from './components/MessagePage'
 import { SvgDefs } from './components/SvgDefs'
 import { useHashLinks } from './hooks/useHashLinks'
+import { startAnalytics, tag } from './lib/analytics'
 import { DEFAULT_LOCALE, LOCALE_INFO } from './i18n/locales'
 import { UI } from './i18n/ui'
 import { useLocale } from './i18n/useLocale'
@@ -16,7 +17,9 @@ export const meta: Route.MetaFunction = () => [{ title: STUDIO.name[DEFAULT_LOCA
 
 // The studio's icons are the site's; a game's page declares its own after these, and the last one wins.
 export const links: Route.LinksFunction = () => [
-  { rel: 'preload', href: '/fonts/Lalezar-Regular.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+  // Both looks use these two weights (index.css); Sort Puzzle's page also loads Regular.
+  { rel: 'preload', href: '/fonts/Lahzeh-ExtraBold.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+  { rel: 'preload', href: '/fonts/Lahzeh-Bold.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
   { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 ]
@@ -29,9 +32,15 @@ const GTAG_INIT = `
   gtag('config', '${GA_MEASUREMENT_ID}');
 `
 
+/** What a page's route can declare in its `handle`: `look: 'flat'` for the light, flat art of Sort Puzzle 2.0. */
+export interface PageHandle {
+  look?: 'flat'
+}
+
 export function Layout({ children }: { children: ReactNode }) {
   const locale = useLocale()
   const { dir } = LOCALE_INFO[locale]
+  const flat = useMatches().some((match) => (match.handle as PageHandle | undefined)?.look === 'flat')
 
   // The "page not found" shell is rendered once for every address, so the language of the
   // one being shown is only known in the browser.
@@ -45,7 +54,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-        <meta name="theme-color" content="#5540c8" />
+        <meta name="theme-color" content={flat ? '#e8e0fa' : '#5540c8'} />
         {/* Only the built site has it, so visits to `pnpm dev` aren't counted. */}
         {import.meta.env.PROD && (
           <>
@@ -60,7 +69,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <style>{'.reveal{opacity:1;transform:none}'}</style>
         </noscript>
       </head>
-      <body>
+      <body className={flat ? 'look-flat' : undefined}>
         <SvgDefs />
         {children}
         <ScrollRestoration />
@@ -71,8 +80,17 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  const ui = UI[useLocale()]
+  const locale = useLocale()
+  const ui = UI[locale]
+  const { pathname } = useLocation()
   useHashLinks()
+
+  // Microsoft Clarity (lib/analytics.ts), on the built site only. Each page view is tagged with
+  // its page ("studio", a game's slug) and language, so recordings and events can be filtered.
+  useEffect(startAnalytics, [])
+  useEffect(() => {
+    tag({ page: pathname.split('/').filter(Boolean)[1] ?? 'studio', language: locale })
+  }, [pathname, locale])
   return (
     <>
       <a

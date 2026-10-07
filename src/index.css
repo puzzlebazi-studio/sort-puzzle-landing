@@ -1,15 +1,71 @@
 @import 'tailwindcss';
 
 @font-face {
-  font-family: 'Lalezar';
-  src: url('/fonts/Lalezar-Regular.woff2') format('woff2');
+  font-family: 'Lahzeh';
+  src: url('/fonts/Lahzeh-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Lahzeh';
+  src: url('/fonts/Lahzeh-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lahzeh';
+  src: url('/fonts/Lahzeh-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * The studio's pages were designed in Lalezar, one heavy display weight. Lahzeh stands in for it
+ * there without changing their design: a step heavier (Bold for plain text, ExtraBold for bold)
+ * and set at 80%, where its letters are as wide and tall as Lalezar's, so every line keeps its
+ * measure. Sort Puzzle's page uses Lahzeh itself (body.look-flat below).
+ */
+@font-face {
+  font-family: 'Lahzeh Studio';
+  src: url('/fonts/Lahzeh-Bold.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 80%;
+}
+@font-face {
+  font-family: 'Lahzeh Studio';
+  src: url('/fonts/Lahzeh-ExtraBold.woff2') format('woff2');
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 80%;
+}
 
 @theme {
-  --font-sans: 'Lalezar', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Lahzeh Studio', 'Lahzeh', ui-sans-serif, system-ui, sans-serif;
+  --font-flat: 'Lahzeh', ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * Sort Puzzle's flat art (the 2.0 redesign): pastel faces, one thick plum outline and a hard
+   * plum shadow with no blur. Liquids are in games/sort-puzzle/lib/palette.ts.
+   */
+  --color-plum: #2e2545;
+  --color-plum-soft: #66597e;
+  --color-paper: #fffbf3;
+  --color-glass: #f4f0ff;
+  --color-ground: #e8e0fa;
+  --color-ground-dot: #d9cdf6;
+  --color-mint: #6fd69a;
+  --color-sky: #7cc4f2;
+  --color-butter: #ffd45e;
+  --color-peach: #ffaa66;
+  --color-coral: #ff7b82;
+  --color-lilac: #b9a4f4;
+  --color-pink: #ff9cc9;
 
   /* The chocolate outline shared by all of the game's art (#3A1500). */
   --color-choco: #3a1500;
@@ -125,6 +181,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  /* Pages in the flat look (Sort Puzzle's): light lavender ground, plum ink. */
+  html:has(body.look-flat) {
+    color-scheme: light;
+  }
+  body.look-flat {
+    background: var(--color-ground);
+    color: var(--color-plum);
+    font-family: var(--font-flat);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 800;
+  }
   ::selection {
     background: var(--color-gold-400);
     color: var(--color-choco);
@@ -219,6 +290,7 @@
       0 0.65em 1.3em rgb(18 8 60 / 0.35);
     color: #fff;
     font-size: 1.3rem;
+    font-weight: 800;
     line-height: 1.2;
     white-space: nowrap;
     text-shadow: var(--outline-choco);
@@ -355,6 +427,7 @@
   .title-3d {
     position: relative;
     display: inline-block;
+    font-weight: 800;
     padding-inline: 0.14em;
     line-height: 1.45;
   }
@@ -445,6 +518,7 @@
       0 3px 0 rgb(58 21 0 / 0.4);
     color: #fff;
     font-size: 1rem;
+    font-weight: 800;
     text-shadow: var(--outline-choco-sm);
   }
 
@@ -616,6 +690,243 @@
     transform: rotate(-8deg);
   }
 
+  /* ================= Flat look: Sort Puzzle's art direction 2.0 ================= */
+
+  /* Faces: the pastel a sticker, button or chip is filled with. */
+  .face-paper {
+    --f: var(--color-paper);
+  }
+  .face-glass {
+    --f: var(--color-glass);
+  }
+  .face-ground {
+    --f: var(--color-ground-dot);
+  }
+  .face-mint {
+    --f: var(--color-mint);
+  }
+  .face-sky {
+    --f: var(--color-sky);
+  }
+  .face-butter {
+    --f: var(--color-butter);
+  }
+  .face-peach {
+    --f: var(--color-peach);
+  }
+  .face-coral {
+    --f: var(--color-coral);
+  }
+  .face-lilac {
+    --f: var(--color-lilac);
+  }
+  .face-pink {
+    --f: var(--color-pink);
+  }
+  .face-aqua {
+    --f: #6fd8e6;
+  }
+  .face-lime {
+    --f: #c2e067;
+  }
+  .face-plum {
+    --f: var(--color-plum);
+    color: var(--color-paper);
+  }
+
+  /* The lavender ground with its tiled dots, like the game's background. */
+  .flat-ground {
+    background-color: var(--color-ground);
+    background-image: radial-gradient(var(--color-ground-dot) 3px, transparent 3.6px);
+    background-size: 34px 34px;
+  }
+
+  /* Retro sunburst: rays from a point, in two tints of one pastel. */
+  .sunburst {
+    --sun: #b9a4f4;
+    --ray: #c7b7f8;
+    --sun-at: 50% 45%;
+    background-color: var(--sun);
+    background-image: repeating-conic-gradient(from 0deg at var(--sun-at), var(--ray) 0deg 6.4deg, var(--sun) 6.4deg 12.857deg);
+  }
+  .sun-violet {
+    --sun: #b9a4f4;
+    --ray: #c7b7f8;
+  }
+  .sun-ground {
+    --sun: #e8e0fa;
+    --ray: #ded3f8;
+  }
+  .sun-butter {
+    --sun: #ffd45e;
+    --ray: #ffe07f;
+  }
+  .sun-mint {
+    --sun: #7fdca8;
+    --ray: #93e3b7;
+  }
+  .sun-sky {
+    --sun: #8ccbf4;
+    --ray: #a0d5f7;
+  }
+  .sun-pink {
+    --sun: #ffa9cf;
+    --ray: #ffb9d8;
+  }
+  .sun-lilac {
+    --sun: #c4b2f7;
+    --ray: #d0c1fa;
+  }
+  .sun-peach {
+    --sun: #ffb98a;
+    --ray: #ffc7a0;
+  }
+
+  /*
+   * A flat pastel panel with one plum outline and a hard shadow straight down, like a sticker.
+   * Only its color is set, so a .sunburst's rays can lie on it.
+   */
+  .sticker {
+    position: relative;
+    border: 3px solid var(--color-plum);
+    border-radius: 1.75rem;
+    background-color: var(--f, var(--color-paper));
+    box-shadow: 0 6px 0 var(--color-plum);
+    color: var(--color-plum);
+  }
+  .sticker--sm {
+    border-radius: 1.15rem;
+    box-shadow: 0 4px 0 var(--color-plum);
+  }
+  .sticker--lg {
+    border-width: 4px;
+    border-radius: 2.5rem;
+    box-shadow: 0 9px 0 var(--color-plum);
+  }
+
+  /* Pill button, like btn_play: it sinks onto its shadow when pressed. */
+  .flat-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: 3.3rem;
+    padding: 0.3em 1.55em 0.4em;
+    border: 3px solid var(--color-plum);
+    border-radius: 999px;
+    background: var(--f, var(--color-mint));
+    box-shadow: 0 5px 0 var(--color-plum);
+    color: var(--color-plum);
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 0.16s cubic-bezier(0.3, 1.6, 0.5, 1),
+      box-shadow 0.16s ease;
+  }
+  .flat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 var(--color-plum);
+  }
+  .flat-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 var(--color-plum);
+  }
+  .flat-btn--sm {
+    min-height: 2.7rem;
+    padding: 0.2em 1.15em 0.3em;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 0 var(--color-plum);
+  }
+  .flat-btn--lg {
+    min-height: 3.9rem;
+    padding: 0.3em 1.9em 0.45em;
+    font-size: 1.45rem;
+  }
+
+  /* Round icon button, like btn_round_hint: a line icon in plum on a pastel face. */
+  .flat-round {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    border: 3px solid var(--color-plum);
+    border-radius: 50%;
+    background: var(--f, var(--color-sky));
+    box-shadow: 0 4px 0 var(--color-plum);
+    color: var(--color-plum);
+  }
+  button.flat-round,
+  a.flat-round {
+    cursor: pointer;
+    transition:
+      transform 0.16s cubic-bezier(0.3, 1.6, 0.5, 1),
+      box-shadow 0.16s ease;
+  }
+  button.flat-round:hover,
+  a.flat-round:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--color-plum);
+  }
+  button.flat-round:active,
+  a.flat-round:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--color-plum);
+  }
+
+  /* Small pill, like pill_gold and the shop's ribbons. */
+  .flat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.2em 0.9em 0.3em;
+    border: 2.5px solid var(--color-plum);
+    border-radius: 999px;
+    background: var(--f, var(--color-paper));
+    box-shadow: 0 3px 0 var(--color-plum);
+    color: var(--color-plum);
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
+  /* Title type: a pastel face, a thick plum outline under it and a hard plum drop. */
+  .stroke-text {
+    font-weight: 800;
+    -webkit-text-stroke: 0.14em var(--color-plum);
+    paint-order: stroke fill;
+    text-shadow: 0 0.09em 0 var(--color-plum);
+  }
+  .stroke-text--thin {
+    -webkit-text-stroke-width: 0.1em;
+    text-shadow: 0 0.07em 0 var(--color-plum);
+  }
+
+  /* Phone mockup in the flat look. */
+  .flat-phone {
+    position: relative;
+    padding: 4%;
+    border: 3px solid var(--color-plum);
+    border-radius: 13% / 7.2%;
+    background: var(--color-plum);
+    box-shadow: 0 8px 0 rgb(46 37 69 / 0.35);
+  }
+  .flat-phone__screen {
+    overflow: hidden;
+    border-radius: 9% / 5%;
+    aspect-ratio: 9 / 16;
+    background: var(--color-ground);
+  }
+  .flat-phone__screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   @keyframes bubble-rise {
     0% {
       opacity: 0;
@@ -638,7 +949,7 @@
 }
 
 /*
- * Body copy is spaced for Lalezar's tall Persian letters; its Latin letters need less room.
+ * Body copy is spaced for Lahzeh's tall Persian letters; its Latin letters need less room.
  * Outside the layers so it outranks the utilities it adjusts.
  */
 :lang(en) :is(.leading-8, .leading-9, .leading-10, .sm\:leading-10, .md\:leading-10) {
@@ -686,6 +997,49 @@
   to {
     stroke-dashoffset: -24;
   }
+}
+
+/* Sort Puzzle's flat illustrations. SVG groups that move carry no transform attribute of their own. */
+@keyframes tap-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(16px);
+  }
+}
+.tap-bob {
+  animation: tap-bob 1.3s ease-in-out infinite;
+}
+@keyframes burst-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+}
+.burst-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: burst-twinkle 1.8s ease-in-out infinite;
+}
+.spark-flicker {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 0.9s ease-in-out infinite;
+}
+@keyframes stream-flow {
+  to {
+    stroke-dashoffset: -76;
+  }
+}
+.stream-flow {
+  animation: stream-flow 0.9s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

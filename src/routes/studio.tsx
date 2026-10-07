@@ -2,9 +2,11 @@ import { Navbar } from '../components/Navbar'
 import { SiteFooter } from '../components/SiteFooter'
 import { StudioLogotype } from '../components/StudioLogotype'
 import { GAMES } from '../games/registry'
+import { useSectionViews } from '../hooks/useSectionViews'
 import { DEFAULT_LOCALE, isLocale, localePath } from '../i18n/locales'
 import { notFoundMeta, pageMeta } from '../i18n/meta'
 import { UI } from '../i18n/ui'
+import { track } from '../lib/analytics'
 import { StudioMark } from '../studio/components/StudioMark'
 import { studioContent, useStudioContent } from '../studio/content'
 import { About } from '../studio/sections/About'
@@ -30,6 +32,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 /** The studio's home page: who we are and the games we make. */
 export default function StudioPage() {
   const { locale, t } = useStudioContent()
+  useSectionViews(['games', 'about'])
   return (
     <>
       <Navbar
@@ -51,7 +54,14 @@ export default function StudioPage() {
         blurb={t.footer.blurb}
         owner={STUDIO.name[locale]}
         columns={[
-          { title: t.footer.games, links: GAMES.map((game) => ({ label: game.name[locale], to: localePath(locale, game.slug) })) },
+          {
+            title: t.footer.games,
+            links: GAMES.map((game) => ({
+              label: game.name[locale],
+              to: localePath(locale, game.slug),
+              onClick: () => track('game_open', { game: game.slug, place: 'footer' }),
+            })),
+          },
           {
             title: t.footer.studio,
             links: [

@@ -1,162 +1,103 @@
 import { Play } from 'lucide-react'
-import { useRef, type CSSProperties } from 'react'
-import { Button3D } from '../../../components/Button3D'
-import { Coin3D } from '../../../components/Coin3D'
-import { Depth } from '../../../components/Depth'
-import { Sparkle } from '../../../components/Sparkle'
+import type { CSSProperties } from 'react'
 import { StoreBadge } from '../../../components/StoreBadge'
-import { Title3D } from '../../../components/Title3D'
-import { Wave } from '../../../components/Wave'
-import { usePointerParallax } from '../../../hooks/usePointerParallax'
+import { track } from '../../../lib/analytics'
 import { cn } from '../../../lib/cn'
-import starFull from '../assets/star-full.webp'
+import homeShot from '../assets/shots/home.webp'
+import { BottleArt } from '../components/art/Bottle'
+import { BOTTLE_WIDTH, bottleHeight } from '../components/art/geometry'
+import { Coin, FlatSparkle } from '../components/art/Decor'
+import { Pour } from '../components/art/Scenes'
 import { GameLogo } from '../components/GameLogo'
-import { TubeArt } from '../components/tube/TubeArt'
-import { useContent } from '../content'
-import { BAZAAR } from '../stores'
+import { useContent, type Face } from '../content'
+import { STORES } from '../stores'
 
-/** Like the game's home screen: finished bottles with corks between mixed ones. */
-const SHELF = [
-  { colors: [0, 0, 0, 0], cork: true, edge: true },
-  { colors: [1, 3, 1, 2] },
-  { colors: [4, 4, 4, 4], cork: true },
-  { colors: [2, 7, 3, 3] },
-  { colors: [6, 6, 6, 6], cork: true },
-  { colors: [5, 0, 5, 1] },
-  { colors: [3, 3, 3, 3], cork: true, edge: true },
-]
+const STAT_FACES: Face[] = ['butter', 'mint', 'pink', 'sky']
 
 export function Hero() {
   const { t, tagline } = useContent()
-  const ref = useRef<HTMLElement>(null)
-  usePointerParallax(ref)
 
   return (
-    <section
-      id="top"
-      ref={ref}
-      className="relative isolate overflow-hidden bg-[radial-gradient(60rem_36rem_at_50%_8rem,#9a84ff_0%,#7560ee_32%,transparent_75%),linear-gradient(180deg,#6650e2_0%,#5540c8_45%,#4432b4_80%,#3b2ba6_100%)] pt-28 sm:pt-32"
-    >
-      <div aria-hidden="true" className="absolute inset-0 -z-10 [background-image:var(--pattern)] [background-size:240px]" />
-      <div aria-hidden="true" className="absolute top-1/3 -right-24 -z-10 size-96 rounded-full bg-berry-500/25 blur-3xl" />
-      <div aria-hidden="true" className="absolute top-10 -left-32 -z-10 size-[28rem] rounded-full bg-aqua-400/20 blur-3xl" />
+    <section id="top" className="sunburst sun-violet relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 md:pb-24" style={{ '--sun-at': '70% 55%' } as CSSProperties}>
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 lg:grid-cols-[1.1fr_1fr] lg:gap-6">
+        <div className="relative z-10 text-center lg:text-start">
+          <span className="flat-chip animate-pop-in">
+            <FlatSparkle size={16} gold twinkle={false} />
+            {t.hero.eyebrow}
+          </span>
 
-      <HeroDecor />
+          <h1 className="relative mx-auto mt-6 w-[min(88vw,560px)] lg:mx-0">
+            <GameLogo size="hero" priority className="block animate-bob-slow" />
+          </h1>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-        <span className="eyebrow tone-aqua animate-pop-in">
-          <Sparkle size={14} className="animate-none" />
-          {t.hero.eyebrow}
-        </span>
+          <p className="mt-6 inline-block rounded-full border-[3px] border-plum bg-plum px-6 pt-2 pb-2.5 text-xl font-extrabold text-paper shadow-[0_5px_0_rgb(46_37_69/0.35)] sm:text-2xl">
+            {tagline}
+          </p>
 
-        <h1 className="relative mx-auto mt-5 w-[min(90vw,660px)]">
-          <GameLogo size="hero" priority className="block animate-bob-slow drop-shadow-[0_18px_22px_rgba(20,8,60,0.45)]" />
-          <Sparkle size={30} className="absolute top-[6%] right-[12%]" style={{ animationDelay: '0.6s' }} />
-          <Sparkle size={22} className="absolute bottom-[14%] left-[8%]" style={{ animationDelay: '1.5s' }} />
-        </h1>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-9 text-plum sm:text-xl sm:leading-10 lg:mx-0">{t.hero.text}</p>
 
-        <Title3D as="p" tone="white" className="mt-3 text-3xl sm:text-4xl md:text-[2.8rem]">
-          {tagline}
-        </Title3D>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+            {STORES.map((store) => (
+              <StoreBadge key={store.id} store={store} height="3.75rem" place="hero" />
+            ))}
+            <a href="#how" className="flat-btn face-sky" onClick={() => track('how_to_play_click')}>
+              <Play className="size-5 fill-plum" strokeWidth={2.4} aria-hidden="true" />
+              {t.hero.howTo}
+            </a>
+          </div>
 
-        <p className="mx-auto mt-4 max-w-xl text-lg leading-9 text-grape-100 sm:text-xl sm:leading-10">{t.hero.text}</p>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <StoreBadge store={BAZAAR} height="4.1rem" />
-          <Button3D href="#how" tone="aqua" size="lg" icon={<Play className="size-6 fill-white" strokeWidth={2.5} aria-hidden="true" />}>
-            {t.hero.howTo}
-          </Button3D>
+          <ul className="mx-auto mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4 lg:mx-0">
+            {t.hero.stats.map((stat, i) => (
+              <li
+                key={stat.label}
+                className={cn('sticker sticker--sm animate-pop-in flex flex-col items-center px-2 pt-2 pb-2.5', `face-${STAT_FACES[i]}`)}
+                style={{ animationDelay: `${250 + i * 90}ms` }}
+              >
+                <span className="text-[1.7rem] leading-tight font-extrabold">{stat.value}</span>
+                <span className="text-sm font-bold">{stat.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <ul className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-          {t.hero.stats.map((stat, i) => (
-            <li
-              key={stat.label}
-              className="pill-3d animate-pop-in flex-col justify-center gap-0 rounded-3xl px-3 pt-2 pb-3"
-              style={{ animationDelay: `${300 + i * 90}ms` }}
-            >
-              <span className="text-2xl text-gold-300 text-outline-sm sm:text-3xl">{stat.value}</span>
-              <span className="text-sm text-grape-100 sm:text-base">{stat.label}</span>
-            </li>
-          ))}
-        </ul>
+        <HeroArt alt={t.hero.shot} />
       </div>
-
-      <Shelf />
-
-      <Wave
-        className="relative mt-4"
-        layers={[
-          { color: '#ff5fb2', opacity: 0.8, speed: 19, offset: -30 },
-          { color: '#22d3ee', opacity: 0.85, speed: -13, offset: -12 },
-          { color: '#3a2aa5', speed: 9, offset: 8 },
-        ]}
-      />
     </section>
   )
 }
 
-function Shelf() {
+/** The game's home screen on a phone, with a pour in front of it like the store banner. */
+function HeroArt({ alt }: { alt: string }) {
+  const height = bottleHeight(4)
   return (
-    <div className="relative z-10 mx-auto mt-10 flex max-w-4xl items-end justify-center gap-3 px-4 sm:mt-14 sm:gap-6">
-      {SHELF.map((bottle, i) => (
-        <div key={i} className={cn('group relative flex flex-col items-center', bottle.edge && 'hidden sm:flex')}>
-          <div className="transition-transform duration-300 ease-[cubic-bezier(.3,1.7,.5,1)] group-hover:-translate-y-5">
-            <div className="animate-bob" style={{ animationDelay: `${-i * 0.45}s` }}>
-              <TubeArt colors={bottle.colors} cork={bottle.cork} bubbles className="w-12 sm:w-[4.6rem]" />
-            </div>
+    <div className="relative mx-auto w-full max-w-[30rem]">
+      <div className="relative mx-auto w-[62%] -rotate-4 animate-bob-slow">
+        <div className="flat-phone">
+          <div className="flat-phone__screen">
+            <img src={homeShot} alt={alt} width={720} height={1280} fetchPriority="high" />
           </div>
-          <span
-            aria-hidden="true"
-            className="mt-2 h-3 w-14 rounded-[50%] bg-[#1a0f55]/60 blur-[3px] sm:w-20"
-            style={{ animation: `shadow-bob 3.4s ease-in-out ${-i * 0.45}s infinite` }}
-          />
         </div>
-      ))}
-    </div>
-  )
-}
+      </div>
 
-function HeroDecor() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-      <Depth depth={-26} className="top-[18%] left-[5%] hidden lg:block">
-        <div className="animate-float" style={{ '--r': '-18deg' } as CSSProperties}>
-          <TubeArt colors={[1, 6, 6, 4]} bubbles className="w-20 opacity-95" />
-        </div>
-      </Depth>
-      <Depth depth={34} className="top-[16%] right-[7%] hidden md:block">
-        <Coin3D size={78} speed={4.5} />
-      </Depth>
-      <Depth depth={18} className="top-[47%] right-[4%] hidden lg:block">
-        <div className="animate-float" style={{ '--r': '14deg', animationDelay: '-2s' } as CSSProperties}>
-          <TubeArt colors={[7, 7, 7, 7]} cork className="w-[4.2rem]" />
-        </div>
-      </Depth>
-      <Depth depth={-40} className="top-[44%] left-[10%] hidden md:block">
-        <img src={starFull} alt="" width={184} height={200} className="w-16 animate-float" style={{ '--r': '-12deg' } as CSSProperties} />
-      </Depth>
-      <Depth depth={22} className="top-[64%] left-[4%] hidden lg:block">
-        <Coin3D size={50} speed={3.6} phase={0.4} />
-      </Depth>
-      <Depth depth={-14} className="top-[8%] right-[30%] hidden xl:block">
-        <Coin3D size={36} speed={3.2} phase={0.7} />
-      </Depth>
+      <svg
+        viewBox={`-30 -330 ${4 * BOTTLE_WIDTH + 100} ${height + 380}`}
+        className="pointer-events-none absolute inset-x-0 -bottom-6 w-full overflow-visible"
+        aria-hidden="true"
+      >
+        <g transform="translate(0 0)">
+          <BottleArt layers={[0, 0, 0, 0]} done />
+        </g>
+        <g transform={`translate(${3 * BOTTLE_WIDTH + 70} 0)`}>
+          <BottleArt layers={[4, 2, 2]} />
+        </g>
+        <Pour from={[3, 2]} into={{ x: 3 * BOTTLE_WIDTH + 70 + BOTTLE_WIDTH / 2, y: 0 }} />
+      </svg>
 
-      <Depth depth={10} className="inset-0">
-        {[
-          ['12%', '22%', 18, 0],
-          ['30%', '8%', 12, 1.2],
-          ['58%', '16%', 16, 0.4],
-          ['20%', '84%', 14, 2.1],
-          ['40%', '93%', 20, 0.9],
-          ['70%', '88%', 12, 1.7],
-          ['8%', '62%', 10, 2.6],
-          ['78%', '30%', 14, 0.2],
-        ].map(([top, left, size, delay], i) => (
-          <Sparkle key={i} size={size as number} className="absolute" style={{ top, left, animationDelay: `${delay}s` } as CSSProperties} />
-        ))}
-      </Depth>
+      <Coin className="absolute top-[6%] left-[2%] w-14 animate-float" />
+      <Coin className="absolute top-[38%] right-[0%] w-10 animate-float [animation-delay:-2s]" />
+      <FlatSparkle size={34} className="absolute top-[2%] right-[14%]" />
+      <FlatSparkle size={24} gold className="absolute top-[28%] left-[10%]" style={{ animationDelay: '1.1s' }} />
+      <FlatSparkle size={20} className="absolute top-[58%] right-[6%]" style={{ animationDelay: '0.5s' }} />
     </div>
   )
 }

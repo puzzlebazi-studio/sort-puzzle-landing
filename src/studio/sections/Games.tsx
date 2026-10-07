@@ -10,6 +10,7 @@ import { Title3D } from '../../components/Title3D'
 import { GAMES } from '../../games/registry'
 import type { Game } from '../../games/types'
 import { LOCALE_INFO, localePath } from '../../i18n/locales'
+import { track } from '../../lib/analytics'
 import { cn } from '../../lib/cn'
 import { useStudioContent } from '../content'
 
@@ -96,11 +97,12 @@ function GameCard({ game, flip }: { game: Game; flip: boolean }) {
             prefetch="intent"
             tone={game.tone}
             aria-label={`${t.games.view}: ${name}`}
+            onClick={() => track('game_open', { game: game.slug, place: 'games' })}
             icon={<Arrow className="size-5 order-last" strokeWidth={3} aria-hidden="true" />}
           >
             {t.games.view}
           </Button3D>
-          {game.store && <StoreBadge store={game.store} height="3.4rem" />}
+          {game.store && <StoreBadge store={game.store} height="3.4rem" place="games" />}
         </div>
       </div>
     </article>

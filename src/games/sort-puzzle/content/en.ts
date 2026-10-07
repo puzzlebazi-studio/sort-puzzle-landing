@@ -4,9 +4,9 @@ export const en: SortPuzzleContent = {
   meta: {
     title: 'Sort Puzzle | A color-sorting puzzle game for Android',
     description:
-      'Sort Puzzle is a colorful brain teaser: pour liquids between bottles until each one holds a single color. 1,000+ stages, frozen and locked bottles, smart hints and daily rewards. Free on Cafe Bazaar and Myket.',
+      'Sort Puzzle is a colorful brain teaser: pour colored water between bottles until each one holds a single color. 1,000+ stages across 10 worlds, 9 special challenges like frozen bottles, locks and bombs, dozens of bottle designs and daily rewards. Free on Cafe Bazaar and Myket.',
     ogTitle: 'Sort Puzzle | Pour, sort, win!',
-    ogDescription: 'A color-sorting puzzle game with 1,000+ stages and four fresh challenges. Free for Android.',
+    ogDescription: 'A color-sorting puzzle game with 1,000+ stages, 9 special challenges and dozens of bottle designs. Free for Android.',
   },
 
   nav: {
@@ -14,6 +14,7 @@ export const en: SortPuzzleContent = {
     how: 'How to play',
     mechanics: 'Challenges',
     stages: 'Stages',
+    designs: 'Designs',
     gallery: 'Screenshots',
     studio: 'Studio',
     faq: 'FAQ',
@@ -21,14 +22,15 @@ export const en: SortPuzzleContent = {
 
   hero: {
     eyebrow: 'A colorful puzzle game for Android',
-    text: 'Move the colored liquids between bottles until every bottle holds just one color. It starts simple, but there are plenty of stages to become a sorting master, and new ones keep arriving.',
+    text: 'Pour colored water from bottle to bottle until each one holds just one color. It starts simple, but with special challenges and ten colorful worlds it keeps your mind busy for ages, and new stages keep arriving.',
     howTo: 'How to play',
     stats: [
       { value: '1,000+', label: 'Stages' },
-      { value: '7', label: 'Difficulty tiers' },
-      { value: '4', label: 'Fresh challenges' },
+      { value: '9', label: 'Special challenges' },
+      { value: '10', label: 'Colorful worlds' },
       { value: 'Free', label: 'For Android' },
     ],
+    shot: 'Sort Puzzle’s home screen: the Play button and colorful bottles',
   },
 
   features: {
@@ -37,35 +39,35 @@ export const en: SortPuzzleContent = {
     subtitle: 'A calm, brainy game you can come back to for a few minutes every day, full of little details that make it even sweeter.',
     items: {
       challenges: {
-        title: 'Fresh challenges',
-        text: 'Hidden layers, frozen and locked bottles, and stages with limited moves: the further you go, the more surprises you find.',
+        title: 'Special challenges',
+        text: 'Hidden layers, ice, locks, bombs, stones and more surprises, sometimes two or three of them in one stage.',
       },
       hints: {
-        title: 'Smart hints',
-        text: 'Stuck? A hint shows you the right next move. If you have hit a dead end, it tells you for free to undo or start over.',
+        title: 'Hints',
+        text: 'Stuck? A hint shows you the right next move.',
       },
       undo: {
         title: 'Undo and an extra bottle',
-        text: 'You get 5 free undos on every attempt, plus an extra bottle for the tough moments.',
+        text: 'You start with 5 free undos, and there’s an extra bottle for the really tricky moments.',
       },
       stars: {
         title: 'Stars and coins',
-        text: 'Win three stars with fewer moves and collect coins. Harder stages pay out more.',
+        text: 'Use fewer moves to earn three stars and collect coins.',
       },
       daily: {
         title: 'Daily rewards',
-        text: 'Drop by every day for a reward: seven days in a row, with 1,000 coins on day seven!',
+        text: 'Drop by every day for a gift: seven days in a row, with 1,000 coins on day seven!',
       },
       achievements: {
-        title: '8 achievements',
-        text: 'From “First Sort” to “Factory Legend”, every achievement comes with a coin reward.',
+        title: '40 achievements',
+        text: 'From “First Step” to “Puzzle Legend”, every achievement comes with a coin reward.',
       },
       offline: {
-        title: 'No internet needed',
-        text: 'Play anywhere, anytime: the stages live inside the game, so you never need a connection.',
+        title: 'Plays offline',
+        text: 'Play anywhere, anytime: the stages live inside the game, so you never need the internet.',
       },
       autosave: {
-        title: 'Auto-save',
+        title: 'Autosave',
         text: 'Your progress saves itself. Even if the game closes mid-stage, you pick up right where you left off.',
       },
     },
@@ -73,50 +75,82 @@ export const en: SortPuzzleContent = {
 
   howTo: {
     eyebrow: 'How to play',
-    title: 'Three easy steps',
-    subtitle: 'The rule is so simple you learn it in seconds, but the later stages will really get your brain working.',
+    title: 'Three simple steps',
+    subtitle: 'The rule is so simple you’ll learn it in seconds, but the later stages will really get your brain working.',
     step: (n) => `Step ${n}: `,
     steps: [
       { title: 'Tap a bottle', text: 'It lifts up, ready to pour.' },
-      { title: 'Tap the target bottle', text: 'Liquid only pours onto the same color or into an empty bottle.' },
-      { title: 'One color per bottle', text: 'When every bottle holds a single color, you win the stage!' },
+      { title: 'Tap where it goes', text: 'Color only pours onto the same color or into an empty bottle.' },
+      { title: 'One color per bottle', text: 'Once every bottle holds a single color, you win the stage!' },
     ],
   },
 
   mechanics: {
     eyebrow: 'Challenges',
-    title: 'Four fresh challenges',
-    subtitle: 'From stage 31 on, stages don’t just get longer: new rules join the game. The first time you meet each one, the game explains it.',
+    title: '9 special challenges',
+    subtitle:
+      'Every few stages a new rule comes along, then shows up again and again, sometimes two or three at once. The first time you meet each one, the game explains it.',
     fromStage: (n) => `From stage ${n}`,
+    moves: (n) => `${n} moves`,
     items: {
       hidden: {
         title: 'Hidden layers',
-        text: 'The lower layers of some bottles show a “?”, and their color only appears once they reach the top. Plan ahead with half the picture!',
-        alt: 'A bottle with three gray “?” layers among colorful bottles, in stage 956',
+        text: 'Each bottle shows only its top layer; the colors underneath appear as they come to the top.',
       },
       moves: {
         title: 'Limited moves',
-        text: 'Every stage whose number ends in 5 is a challenge stage, and your moves are counted. Running out? Get 5 extra moves.',
-        alt: 'A “47 moves” counter with a stopwatch badge above the bottles, in challenge stage 725',
+        text: 'On challenge stages your moves are counted. Ran out? Grab 5 more.',
       },
       frozen: {
         title: 'Frozen bottle',
-        text: 'Every move melts a little of the ice. Until its counter reaches zero, you can’t pour anything in or take anything out.',
-        alt: 'Two bottles in ice with counters of 7 and 8, in stage 956',
+        text: 'Its ice melts a little with every move; until its counter hits zero, nothing goes in or out.',
       },
       locked: {
         title: 'Locked bottle',
-        text: 'Check the lock’s color: fill a bottle with that color to open the lock and use the bottle again.',
-        alt: 'Two bottles with a purple lock and a green lock, in stage 926',
+        text: 'Complete a bottle in the lock’s color to open it up again.',
+      },
+      ring: {
+        title: 'Color ring',
+        text: 'It only takes its ring’s color, but any color can be poured out of it.',
+      },
+      neck: {
+        title: 'Narrow neck',
+        text: 'A narrow neck pours just one layer per move.',
+      },
+      stones: {
+        title: 'Stones',
+        text: 'Stones fill a bottle’s bottom for good, leaving less room for colors.',
+      },
+      bomb: {
+        title: 'Bomb',
+        text: 'Complete or empty the bomb’s bottle before its fuse runs out!',
+      },
+      tight: {
+        title: 'Tight stage',
+        text: 'Only one empty bottle, and no extra bottle to help.',
       },
     },
   },
 
   stages: {
     eyebrow: 'Stages',
-    title: '7 steps to mastery',
+    title: '10 worlds, 7 steps to mastery',
     subtitle:
-      'Each tier brings more colors and bottles. Every tenth stage is tougher than the rest, every ten stages open with a breather, and from Medium on, fresh challenges join in.',
+      'Stages wind across a map from one world to the next. Every tier brings more colors and bottles, and the special challenges arrive in the very first world.',
+    worldsTitle: 'Ten colorful worlds',
+    worlds: [
+      'Color Meadow',
+      'Candy Land',
+      'Space Trip',
+      'Neon City',
+      'Toy World',
+      'Ocean Deep',
+      'Cyber City',
+      'Magic Lab',
+      'Volcano Mountain',
+      'Heroes’ Peak',
+    ],
+    tiersTitle: 'Seven difficulty tiers',
     tiers: {
       tutorial: 'Tutorial',
       easy: 'Easy',
@@ -133,15 +167,25 @@ export const en: SortPuzzleContent = {
     moves: 'Moves',
     colorCount: (n) => `${n} colors`,
     noChallenges: 'No special challenges',
-    challenges: (names) => `Challenges: ${names.join(', ')}`,
-    challengesLegend: 'Challenges in each tier',
+    someChallenges: (n) => `${n} special challenges`,
+    allChallenges: (n) => `All ${n} challenges`,
     difficulty: (n, total) => `Difficulty ${n} of ${total}`,
+  },
+
+  designs: {
+    eyebrow: 'Designs',
+    title: 'Dozens of bottle designs',
+    subtitle: 'From stage rewards to rare, epic and legendary designs: pick the bottles you like best.',
+    rarities: { rare: 'Rare', epic: 'Epic', legendary: 'Legendary' },
+    forms: (n) => `${n} different shapes`,
+    reward: (n) => `A new shape every ${n} stages`,
+    shelf: 'Ten bottle shapes on two shelves: tube, slim, fat jar, flask, potion, hourglass, vase, tumbler, barrel and shoulders',
   },
 
   gallery: {
     eyebrow: 'Screenshots',
-    title: 'A look at the game',
-    subtitle: 'Bright, colorful graphics, smooth pouring animations and screens that come alive like a cartoon.',
+    title: 'A look inside',
+    subtitle: 'Bright, cheerful art, smooth pouring animations and screens that come alive like a cartoon.',
     label: 'Game screenshots',
     carousel: 'carousel',
     show: (title) => `Show screenshot: ${title}`,
@@ -150,81 +194,85 @@ export const en: SortPuzzleContent = {
     position: (n, total) => `Screenshot ${n} of ${total}`,
     shots: {
       home: { title: 'Home screen', text: 'Play, the stage map, daily rewards and achievements.' },
-      pour: { title: 'Pouring colors', text: 'Stage 956: ten colors, hidden layers and two frozen bottles.' },
-      locked: { title: 'Locked bottles', text: 'Stage 926: complete the lock’s color to open it.' },
-      challenge: { title: 'Challenge stage', text: 'Stage 725: you only have 47 moves!' },
+      board: { title: 'Challenges combined', text: 'Stage 221: hidden layers, a narrow neck and a stone.' },
+      frozen: { title: 'Frozen bottle', text: 'Stage 14: the ice melts with every move.' },
+      locked: { title: 'Locked bottle', text: 'Stage 18: complete the lock’s color to open it.' },
+      bombs: { title: 'Bomb', text: 'Stage 37: complete or empty the bottle before the fuse runs out.' },
+      challenge: { title: 'Challenge stage', text: 'Stage 11: only 14 moves to spare!' },
+      designs: { title: 'Bottle designs', text: 'Stage 30 with vase-shaped bottles.' },
       result: { title: 'Stars and coins', text: 'Fewer moves, more stars.' },
       map: { title: 'Stage map', text: 'Every stage along one winding path.' },
-      daily: { title: 'Daily rewards', text: 'Drop by every day: 1,000 coins on day seven!' },
-      achievements: { title: 'Achievements', text: 'Eight achievements, each with a coin reward.' },
+      daily: { title: 'Daily reward', text: 'Drop by daily; day seven pays 1,000 coins!' },
+      achievements: { title: 'Achievements', text: '40 achievements, each with a coin reward.' },
+      shop: { title: 'Bottle shop', text: 'Earn new shapes as you clear stages.' },
     },
   },
 
   studio: {
     eyebrow: 'Studio',
     title: 'Behind Sort Puzzle',
-    subtitle: 'An independent Iranian game, crafted with care from stage design to the very last animation.',
+    subtitle: 'An independent Iranian game, crafted with care, from designing the stages to the very last animation.',
     role: 'The makers of Sort Puzzle',
     story:
-      'We made Sort Puzzle to relax you and challenge your mind at the same time. From laying out the stages to the sound of pouring colors, we put time into every detail.',
+      'We made Sort Puzzle to calm you down and challenge your mind at the same time. From laying out the stages to the sound of pouring colors, we took our time over every detail.',
     visit: 'Meet the studio',
   },
 
   download: {
     eyebrow: 'Free for Android',
-    title: 'Ready? Download it!',
-    text: 'Install Sort Puzzle for free from Cafe Bazaar or Myket right now and start your first stage in seconds!',
-    android: (version) => `Android ${version} or later`,
+    title: 'Ready? Get it now!',
+    text: 'Install Sort Puzzle for free from Cafe Bazaar or Myket and start your first stage in seconds!',
+    android: (version) => `Android ${version} and up`,
     free: 'Free',
     offline: 'No internet needed',
-    scan: 'Scan with your phone camera',
+    scan: 'Scan with your phone’s camera',
   },
 
   faq: {
     eyebrow: 'FAQ',
-    title: 'Common questions',
+    title: 'Frequently asked questions',
     items: [
       {
         q: 'Is Sort Puzzle free?',
-        a: 'Yes! The game is free, and every stage unlocks just by playing. Buying coins, the Starter Pack and Remove Ads are all completely optional.',
+        a: 'Yes! The game is free, and every stage unlocks just by playing. Buying coins or Remove Ads is completely optional.',
       },
       {
         q: 'Do I need the internet to play?',
-        a: 'No. The stages live inside the game, so you can play offline. You only need the internet and the store you installed it from (Cafe Bazaar or Myket) for in-app purchases.',
+        a: 'No. The stages live inside the game, so you can play offline. You only need the internet, and the store you installed the game from (Cafe Bazaar or Myket), for in-app purchases.',
       },
       {
-        q: 'What are frozen and locked bottles?',
-        a: 'From stage 31 on, fresh challenges show up: hidden layers whose color appears once they reach the top, challenge stages with limited moves, frozen bottles that melt a little with every move, and locked bottles that open when you complete the lock’s color. The first time you meet each one, the game explains it.',
+        q: 'What are the special challenges?',
+        a: 'From stage 7 on, a new rule turns up every few stages: hidden layers, limited moves, frozen bottles, locked bottles, color rings, narrow necks, stones, bombs and tight stages. After that each one keeps coming back, and sometimes two or three meet in one stage. The first time you see each one, the game explains it.',
       },
       {
         q: 'I’m stuck. What can I do?',
-        a: 'You get 5 free undos on every attempt. A hint shows your next move, the extra bottle gives you an empty spot, and you can always restart the stage. In challenge stages, if you run out of moves, you can get 5 extra.',
+        a: 'You start with 5 free undos; after that, each undo costs a short video or a few coins. A hint shows the next move, an extra bottle gives you an empty spot, and you can always restart the stage. On challenge stages, if you run out of moves, you can get 5 more.',
+      },
+      {
+        q: 'How do I get bottle designs?',
+        a: 'Every 50 stages you earn a new bottle shape. Rare, epic and legendary designs can be bought with coins in the game’s shop.',
       },
       {
         q: 'Is my progress saved?',
-        a: 'Yes, automatically. Even if your phone turns off or the game closes mid-stage, you continue from the same spot next time.',
+        a: 'Yes, automatically. Even if your phone switches off or the game closes mid-stage, you carry on from the same spot next time.',
       },
       {
         q: 'Are there ads?',
-        a: 'Ads only appear between stages, spaced out, and never during play. Buy “Remove Ads” to get rid of them for good.',
+        a: 'Every so often a short ad plays between stages, never in the middle of one. Rewarded videos only play when you choose to watch them. Buying Remove Ads gets rid of the ads between stages for good.',
       },
       {
-        q: 'What happens to my purchases if I reinstall the game?',
-        a: '“Remove Ads” and the “Starter Pack” are tied to your account on the store you bought them from (Cafe Bazaar or Myket) and come back automatically when you reinstall from that store.',
+        q: 'If I reinstall the game, what happens to Remove Ads?',
+        a: 'Remove Ads, whether bought on its own or with a coin bundle, is tied to your account in the store you bought it from (Cafe Bazaar or Myket), so it comes back automatically when you reinstall from there.',
       },
       {
         q: 'Which phones does it run on?',
         a: 'Any Android phone or tablet running Android 8 or later.',
       },
-      {
-        q: 'What language is the game in?',
-        a: 'The game’s text is in Persian.',
-      },
     ],
   },
 
   footer: {
-    blurb: 'Pour, sort, win! A color-sorting puzzle game with four fresh challenges.',
+    blurb: 'Pour, sort, win! A color-sorting puzzle game with 9 special challenges and dozens of bottle designs.',
     sections: 'Sections',
     download: 'Download',
   },

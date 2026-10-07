@@ -1,0 +1,5 @@
+node_modules
+# Renders: run `pnpm render` to make them again.
+out
+# Synthesized by `pnpm music` (studio and render run it first).
+public/music

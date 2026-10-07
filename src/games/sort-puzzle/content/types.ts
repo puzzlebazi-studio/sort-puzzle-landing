@@ -1,9 +1,22 @@
 /** The page's sections, in order; each is also the id the menus link to. */
-export type SectionId = 'features' | 'how' | 'mechanics' | 'stages' | 'gallery' | 'studio' | 'faq'
+export type SectionId = 'features' | 'how' | 'mechanics' | 'stages' | 'designs' | 'gallery' | 'studio' | 'faq'
 export type FeatureId = 'challenges' | 'hints' | 'undo' | 'stars' | 'daily' | 'achievements' | 'offline' | 'autosave'
-export type MechanicId = 'hidden' | 'moves' | 'frozen' | 'locked'
+export type MechanicId = 'hidden' | 'moves' | 'frozen' | 'locked' | 'ring' | 'neck' | 'stones' | 'bomb' | 'tight'
 export type TierId = 'tutorial' | 'easy' | 'medium' | 'hard' | 'veryHard' | 'pro' | 'master'
-export type ShotId = 'home' | 'pour' | 'locked' | 'challenge' | 'result' | 'map' | 'daily' | 'achievements'
+export type RarityId = 'rare' | 'epic' | 'legendary'
+export type ShotId =
+  | 'home'
+  | 'board'
+  | 'frozen'
+  | 'locked'
+  | 'bombs'
+  | 'challenge'
+  | 'designs'
+  | 'result'
+  | 'map'
+  | 'daily'
+  | 'achievements'
+  | 'shop'
 
 interface Heading {
   eyebrow: string
@@ -29,6 +42,8 @@ export interface SortPuzzleContent {
     text: string
     howTo: string
     stats: { value: string; label: string }[]
+    /** The phone's screenshot, for screen readers. */
+    shot: string
   }
   features: Heading & { items: Record<FeatureId, Item> }
   howTo: Heading & {
@@ -38,9 +53,14 @@ export interface SortPuzzleContent {
   }
   mechanics: Heading & {
     fromStage: (n: string) => string
-    items: Record<MechanicId, Item & { alt: string }>
+    /** On the limited-moves card's badge. */
+    moves: (n: string) => string
+    items: Record<MechanicId, Item>
   }
   stages: Heading & {
+    worldsTitle: string
+    worlds: string[]
+    tiersTitle: string
     tiers: Record<TierId, string>
     tier: (n: string) => string
     stageRange: (range: string) => string
@@ -49,9 +69,16 @@ export interface SortPuzzleContent {
     moves: string
     colorCount: (n: string) => string
     noChallenges: string
-    challenges: (names: string[]) => string
-    challengesLegend: string
+    someChallenges: (n: string) => string
+    allChallenges: (n: string) => string
     difficulty: (n: string, total: string) => string
+  }
+  designs: Heading & {
+    rarities: Record<RarityId, string>
+    forms: (n: string) => string
+    reward: (n: string) => string
+    /** For screen readers: what the two shelves show. */
+    shelf: string
   }
   gallery: Heading & {
     label: string

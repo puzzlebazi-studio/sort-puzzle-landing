@@ -1,11 +1,11 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { PhoneFrame } from '../../../components/PhoneFrame'
-import { SectionHeading } from '../../../components/SectionHeading'
 import { useReducedMotion } from '../../../hooks/useMediaQuery'
 import { formatNumber } from '../../../i18n/format'
 import { LOCALE_INFO } from '../../../i18n/locales'
+import { track } from '../../../lib/analytics'
 import { cn } from '../../../lib/cn'
+import { FlatHeading } from '../components/FlatHeading'
 import { SHOTS, useContent } from '../content'
 
 const COUNT = SHOTS.length
@@ -28,9 +28,15 @@ export function Gallery() {
   // The next slide waits on the reading side's far end: the left in Persian, the right in English.
   const rtl = LOCALE_INFO[locale].dir === 'rtl'
   const side = rtl ? -1 : 1
-  const [Previous, Next] = rtl ? [ChevronRight, ChevronLeft] : [ChevronLeft, ChevronRight]
+  const [Previous, Next] = rtl ? [ArrowRight, ArrowLeft] : [ArrowLeft, ArrowRight]
 
-  const go = (step: number) => setActive((value) => (value + step + COUNT) % COUNT)
+  /** A visitor's choice (not the autoplay): show slide `index` and report it. */
+  const show = (index: number, how: 'arrow' | 'swipe' | 'tap' | 'dot') => {
+    const next = (index + COUNT) % COUNT
+    setActive(next)
+    track('gallery_browse', { shot: SHOTS[next].id, how })
+  }
+  const go = (step: number, how: 'arrow' | 'swipe') => show(active + step, how)
 
   useEffect(() => {
     if (reduced || paused) return
@@ -42,12 +48,11 @@ export function Gallery() {
 
   return (
     <section id="gallery" className="relative overflow-hidden py-20 md:py-28">
-      <div aria-hidden="true" className="absolute top-[55%] left-1/2 -z-10 size-[34rem] -translate-1/2 rounded-full bg-grape-400/30 blur-3xl" />
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading eyebrow={t.gallery.eyebrow} tone="leaf" title={t.gallery.title} subtitle={t.gallery.subtitle} />
+        <FlatHeading eyebrow={t.gallery.eyebrow} face="mint" title={t.gallery.title} subtitle={t.gallery.subtitle} />
 
         <div
-          className="relative mx-auto h-[min(118vw,520px)] max-w-3xl touch-pan-y select-none [perspective:1400px]"
+          className="relative mx-auto h-[min(118vw,540px)] max-w-3xl touch-pan-y select-none perspective-[1400px]"
           role="region"
           aria-roledescription={t.gallery.carousel}
           aria-label={t.gallery.label}
@@ -67,7 +72,7 @@ export function Gallery() {
             // Dragging toward the reading direction's start brings in the next slide.
             if (Math.abs(dx) > 40) {
               swiped.current = true
-              go(Math.sign(dx) === side ? -1 : 1)
+              go(Math.sign(dx) === side ? -1 : 1, 'swipe')
             }
           }}
         >
@@ -84,67 +89,56 @@ export function Gallery() {
                 aria-hidden={distance > 1}
                 onClick={() => {
                   if (swiped.current) swiped.current = false
-                  else setActive(i)
+                  else show(i, 'tap')
                 }}
                 className={cn(
-                  'absolute top-0 left-1/2 w-[min(58vw,250px)] cursor-pointer transition-[transform,opacity,filter] duration-700 ease-[cubic-bezier(.2,.8,.2,1)]',
+                  'absolute top-0 left-1/2 w-[min(58vw,260px)] cursor-pointer transition-[transform,opacity] duration-700 ease-[cubic-bezier(.2,.8,.2,1)]',
                   distance > 1 && 'pointer-events-none',
                 )}
                 style={
                   {
                     zIndex: 10 - distance,
-                    opacity: distance > 1 ? 0 : 1,
-                    filter: `brightness(${1 - distance * 0.28})`,
-                    transform: `translateX(-50%) translateX(${offset * side * 68}%) translateZ(${-distance * 190}px) rotateY(${offset * side * 34}deg)`,
+                    opacity: distance > 1 ? 0 : distance === 1 ? 0.85 : 1,
+                    transform: `translateX(-50%) translateX(${offset * side * 70}%) translateZ(${-distance * 170}px) rotateY(${offset * side * 28}deg)`,
                   } as CSSProperties
                 }
               >
-                <PhoneFrame src={item.src} alt={`${title}: ${text}`} />
+                <div className="flat-phone">
+                  <div className="flat-phone__screen">
+                    <img src={item.src} alt={`${title}: ${text}`} width={720} height={1280} loading="lazy" decoding="async" draggable={false} />
+                  </div>
+                </div>
               </button>
             )
           })}
         </div>
 
         <div className="mt-8 flex items-center justify-center gap-5">
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label={t.gallery.previous}
-            className="icon-3d tone-grape size-12 cursor-pointer transition-transform hover:scale-110 active:scale-95"
-            style={{ fontSize: 12 }}
-          >
-            <Previous strokeWidth={6.5} />
-            <Previous strokeWidth={3.2} />
+          <button type="button" onClick={() => go(-1, 'arrow')} aria-label={t.gallery.previous} className="flat-round face-sky size-12">
+            <Previous className="size-6" strokeWidth={2.8} />
           </button>
-          <div className="min-w-48 text-center" aria-live="polite">
-            <p key={shot.title} className="animate-pop-in text-2xl text-gold-300 text-outline-sm" style={{ animationDuration: '0.4s' }}>
+          <div className="min-w-56 text-center" aria-live="polite">
+            <p key={shot.title} className="animate-pop-in text-2xl font-extrabold" style={{ animationDuration: '0.4s' }}>
               {shot.title}
             </p>
-            <p className="text-base text-grape-100">{shot.text}</p>
+            <p className="text-base text-plum-soft">{shot.text}</p>
           </div>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label={t.gallery.next}
-            className="icon-3d tone-grape size-12 cursor-pointer transition-transform hover:scale-110 active:scale-95"
-            style={{ fontSize: 12 }}
-          >
-            <Next strokeWidth={6.5} />
-            <Next strokeWidth={3.2} />
+          <button type="button" onClick={() => go(1, 'arrow')} aria-label={t.gallery.next} className="flat-round face-sky size-12">
+            <Next className="size-6" strokeWidth={2.8} />
           </button>
         </div>
 
-        <div className="mt-5 flex justify-center gap-2">
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
           {SHOTS.map((item, i) => (
             <button
               key={item.id}
               type="button"
-              onClick={() => setActive(i)}
+              onClick={() => show(i, 'dot')}
               aria-label={t.gallery.position(formatNumber(locale, i + 1), formatNumber(locale, COUNT))}
               aria-current={i === active ? 'true' : undefined}
               className={cn(
-                'h-3 cursor-pointer rounded-full border-2 border-choco transition-all duration-300',
-                i === active ? 'w-9 bg-gold-400' : 'w-3 bg-white/40 hover:bg-white/70',
+                'h-3.5 cursor-pointer rounded-full border-2 border-plum transition-all duration-300',
+                i === active ? 'w-9 bg-butter' : 'w-3.5 bg-paper hover:bg-ground-dot',
               )}
             />
           ))}

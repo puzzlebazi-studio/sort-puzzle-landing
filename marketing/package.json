@@ -1,0 +1,31 @@
+{
+  "name": "puzzlebazi-marketing",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PuzzleBazi Studio’s ads, made in code with Remotion and rendered to MP4.",
+  "type": "module",
+  "scripts": {
+    "studio": "node scripts/make-music.ts && remotion studio src/index.ts",
+    "music": "node scripts/make-music.ts",
+    "render": "node scripts/make-music.ts && node scripts/render.ts",
+    "render:ad": "node scripts/make-music.ts && node scripts/render.ts sort-puzzle-launch",
+    "render:stills": "node scripts/render.ts stills",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.533",
+    "@remotion/cli": "^4.0.533",
+    "@remotion/fonts": "^4.0.533",
+    "@remotion/media": "^4.0.533",
+    "@remotion/renderer": "4.0.533",
+    "@remotion/transitions": "^4.0.533",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.533"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.1",
+    "@types/react": "^19.3.0",
+    "typescript": "^6.0.3"
+  }
+}

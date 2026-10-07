@@ -2,11 +2,15 @@ import { Navbar } from '../../components/Navbar'
 import { SiteFooter } from '../../components/SiteFooter'
 import { DEFAULT_LOCALE, isLocale } from '../../i18n/locales'
 import { notFoundMeta, pageMeta } from '../../i18n/meta'
+import { useSectionViews } from '../../hooks/useSectionViews'
 import { UI } from '../../i18n/ui'
+import { track } from '../../lib/analytics'
+import type { PageHandle } from '../../root'
 import type { Route } from './+types/route'
 import { GameLogo } from './components/GameLogo'
 import { contentFor, SECTIONS, useContent } from './content'
 import { SORT_PUZZLE } from './game'
+import { Designs } from './sections/Designs'
 import { Download } from './sections/Download'
 import { Faq } from './sections/Faq'
 import { Features } from './sections/Features'
@@ -31,6 +35,9 @@ export const meta: Route.MetaFunction = ({ params }) => {
   })
 }
 
+/** The page wears the game's flat art (Sort Puzzle 2.0), from its first paint. */
+export const handle: PageHandle = { look: 'flat' }
+
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/sort-puzzle/favicon.svg' },
   { rel: 'apple-touch-icon', href: '/sort-puzzle/apple-touch-icon.png' },
@@ -39,16 +46,18 @@ export const links: Route.LinksFunction = () => [
 /** Sort Puzzle's page: it introduces the game; nothing on it is playable. */
 export default function SortPuzzlePage() {
   const { locale, t, name } = useContent()
+  useSectionViews([...SECTIONS, 'download'])
   return (
     <>
-      <Navbar brand={<GameLogo size="nav" />} links={SECTIONS.map((id) => ({ href: `#${id}`, label: t.nav[id] }))} />
+      <Navbar look="flat" brand={<GameLogo size="nav" />} links={SECTIONS.map((id) => ({ href: `#${id}`, label: t.nav[id] }))} />
       <main id="main" className="overflow-x-clip">
         <Hero />
-        <div className="page-bg">
+        <div className="flat-ground border-t-4 border-plum">
           <Features />
           <HowToPlay />
           <Mechanics />
           <Stages />
+          <Designs />
           <Gallery />
           <Studio />
           <Download />
@@ -56,6 +65,7 @@ export default function SortPuzzlePage() {
         </div>
       </main>
       <SiteFooter
+        look="flat"
         brand={<GameLogo size="footer" />}
         blurb={t.footer.blurb}
         owner={name}
@@ -68,6 +78,7 @@ export default function SortPuzzlePage() {
               label: store.name[locale],
               href: store.href,
               soon: store.comingSoon,
+              onClick: () => track('store_click', { store: store.id, place: 'footer' }),
             })),
           },
         ]}

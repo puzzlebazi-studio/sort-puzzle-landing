@@ -1,12 +1,11 @@
-import { Title3D } from '../../../components/Title3D'
 import { cn } from '../../../lib/cn'
 import logo from '../assets/logo-title.webp'
 import { useContent } from '../content'
 
 const SIZES = {
-  nav: { image: 'h-10 w-auto sm:h-11', text: 'text-[1.45rem] leading-none sm:text-[1.75rem]' },
-  footer: { image: 'h-14 w-auto', text: 'text-[2.3rem] leading-none' },
-  hero: { image: 'w-full', text: 'text-[4.2rem] leading-[1.25] sm:text-8xl md:text-[7.5rem]' },
+  nav: { image: 'h-10 w-auto sm:h-11', text: 'text-[1.6rem] leading-none sm:text-[1.85rem]' },
+  footer: { image: 'h-16 w-auto', text: 'text-[2.4rem] leading-none' },
+  hero: { image: 'w-full', text: 'text-[3.9rem] leading-[1.1] sm:text-[5.4rem] lg:text-[5.2rem] xl:text-[6.2rem]' },
 }
 
 interface GameLogoProps {
@@ -17,24 +16,25 @@ interface GameLogoProps {
 }
 
 /**
- * The game's logo. The artwork spells the Persian name, so other languages get the name in the
- * same extruded gold lettering.
+ * The game's logo (logo_title in the game): «سورت» in butter and «پازل» in coral, outlined in
+ * plum. The artwork spells the Persian name, so other languages get the name set the same way.
  */
 export function GameLogo({ size, priority, className }: GameLogoProps) {
   const { locale, name } = useContent()
   if (locale !== 'fa') {
+    const [first, ...rest] = name.split(' ')
     return (
-      <Title3D as="span" className={cn(SIZES[size].text, className)}>
-        {name}
-      </Title3D>
+      <span className={cn('stroke-text inline-block whitespace-nowrap', SIZES[size].text, className)}>
+        <span className="text-butter">{first}</span> <span className="text-coral">{rest.join(' ')}</span>
+      </span>
     )
   }
   return (
     <img
       src={logo}
       alt={name}
-      width={912}
-      height={304}
+      width={920}
+      height={344}
       loading={priority || size === 'nav' ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : undefined}
       className={cn(SIZES[size].image, className)}

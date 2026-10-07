@@ -1,53 +1,80 @@
-import { GameIcon } from '../../../components/GameIcon'
+import { Ban, Timer } from 'lucide-react'
 import { Reveal } from '../../../components/Reveal'
-import { SectionHeading } from '../../../components/SectionHeading'
 import { formatNumber } from '../../../i18n/format'
-import { MECHANICS, useContent } from '../content'
+import { Bottle } from '../components/art/Bottle'
+import { AddBottle } from '../components/art/Icons'
+import { FlatHeading } from '../components/FlatHeading'
+import { MECHANIC_COUNTERS, MECHANICS, useContent, type Mechanic } from '../content'
 
 export function Mechanics() {
-  const { locale, t } = useContent()
+  const { t } = useContent()
   return (
     <section id="mechanics" className="relative py-20 md:py-28">
-      <div
-        aria-hidden="true"
-        className="absolute top-1/3 left-1/2 -z-10 h-96 w-[56rem] max-w-full -translate-x-1/2 rounded-full bg-aqua-400/10 blur-3xl"
-      />
-      <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading eyebrow={t.mechanics.eyebrow} tone="red" title={t.mechanics.title} subtitle={t.mechanics.subtitle} />
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {MECHANICS.map((mechanic, i) => {
-            const item = t.mechanics.items[mechanic.id]
-            return (
+      <div className="mx-auto max-w-6xl px-3 sm:px-4">
+        <div className="sticker sticker--lg sunburst sun-sky overflow-hidden px-4 pt-12 pb-10 sm:px-8 md:pt-16 md:pb-14 lg:px-12">
+          <FlatHeading eyebrow={t.mechanics.eyebrow} face="paper" title={t.mechanics.title} subtitle={t.mechanics.subtitle} titleClassName="text-butter" className="[&_p]:text-plum" />
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {MECHANICS.map((mechanic, i) => (
               <li key={mechanic.id}>
-                <Reveal delay={(i % 4) * 90} className="h-full">
-                  <article className="card-3d flex h-full flex-col p-3 pb-6 transition-transform duration-300 hover:-translate-y-2">
-                    <span className="eyebrow tone-gold absolute -top-4 z-10 text-[0.95rem] [inset-inline-start:1.1rem]">
-                      {t.mechanics.fromStage(formatNumber(locale, mechanic.from))}
-                    </span>
-                    <div className="overflow-hidden rounded-[1.25rem] border-[3px] border-choco bg-grape-600">
-                      <img
-                        src={mechanic.image}
-                        alt={item.alt}
-                        width={540}
-                        height={480}
-                        loading="lazy"
-                        decoding="async"
-                        draggable={false}
-                        className="block aspect-[9/8] w-full object-cover"
-                      />
-                    </div>
-                    <div className="mt-5 flex items-center gap-3 px-2">
-                      <GameIcon icon={mechanic.icon} tone={mechanic.tone} size={46} />
-                      <h3 className="text-[1.45rem] leading-snug">{item.title}</h3>
-                    </div>
-                    <p className="mt-2 px-2 text-[1.05rem] leading-8 text-choco-soft">{item.text}</p>
-                  </article>
+                <Reveal delay={(i % 3) * 90} className="h-full">
+                  <MechanicCard mechanic={mechanic} />
                 </Reveal>
               </li>
-            )
-          })}
-        </ul>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
+  )
+}
+
+function MechanicCard({ mechanic }: { mechanic: Mechanic }) {
+  const { locale, t } = useContent()
+  const item = t.mechanics.items[mechanic.id]
+  return (
+    <article className="sticker flex h-full items-center gap-4 p-4 transition-transform duration-300 hover:-translate-y-1.5 sm:p-5">
+      <span className="flat-chip face-butter absolute -top-3.5 z-10 text-sm inset-e-4">
+        {t.mechanics.fromStage(formatNumber(locale, mechanic.from))}
+      </span>
+      <div className="grid h-36 w-24 shrink-0 place-items-center rounded-2xl border-[2.5px] border-plum bg-ground" aria-hidden="true">
+        <MechanicArt mechanic={mechanic} />
+      </div>
+      <div>
+        <h3 className="text-[1.35rem] leading-snug">{item.title}</h3>
+        <p className="mt-1 text-[1.02rem] leading-7 text-plum-soft">{item.text}</p>
+      </div>
+    </article>
+  )
+}
+
+/** The mechanic drawn as its card shows it, like the "۹ چالش ویژه" store banner. */
+function MechanicArt({ mechanic }: { mechanic: Mechanic }) {
+  const { locale, t } = useContent()
+  if ('bottle' in mechanic.art) {
+    const counters = {
+      frozen: mechanic.id === 'frozen' ? formatNumber(locale, MECHANIC_COUNTERS.frozen) : undefined,
+      bomb: mechanic.id === 'bomb' ? formatNumber(locale, MECHANIC_COUNTERS.bomb) : undefined,
+    }
+    return <Bottle {...mechanic.art.bottle} {...counters} className="h-28 w-auto" />
+  }
+  if (mechanic.art.badge === 'moves') {
+    return (
+      <span className="flex flex-col items-center gap-2">
+        <span className="flat-round face-pink size-14">
+          <Timer className="size-8" strokeWidth={2.4} />
+        </span>
+        <span className="flat-chip face-pink px-2 text-xs">{t.mechanics.moves(formatNumber(locale, MECHANIC_COUNTERS.moves))}</span>
+      </span>
+    )
+  }
+  return (
+    <span className="relative">
+      <span className="flat-round face-sky size-16">
+        <AddBottle className="size-9" strokeWidth={2.4} />
+      </span>
+      <span className="flat-round face-coral absolute -top-2 -right-2 size-7 shadow-none">
+        <Ban className="size-4" strokeWidth={3} />
+      </span>
+    </span>
   )
 }
