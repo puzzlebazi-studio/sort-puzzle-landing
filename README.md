@@ -16,7 +16,9 @@ React 19, React Router 8 (framework mode), TypeScript, Tailwind CSS 4 and Vite. 
 site, Persian and English, is set in Lahzeh, the game's own type; so are the share images, banners
 and ads. The studio's pages were designed in Lalezar, so there Lahzeh stands in for it at the same
 measure ("Lahzeh Studio" in `index.css`: a weight heavier and set at 80%); Sort Puzzle's page uses
-Lahzeh as is. The ads are made in `marketing/`, a separate package (see *Ads and banners*).
+Lahzeh as is. The ads are made in `marketing/`, a separate package (see *Ads and banners*). The blog, at
+`blog.puzzlebazi.studio`, is `blog/`: another separate package, a Next.js app shipped as its own
+Docker image (see `blog/README.md`).
 
 ```bash
 pnpm install
@@ -58,6 +60,31 @@ replaces Liara's default nginx rules, which answer every unknown address with `/
 the redirect to `/fa/`): unknown addresses get `404.html` instead, and it turns on gzip and browser
 caching (a year for the build's content-hashed `assets/`).
 
+## Search engines
+
+The build writes `dist/sitemap.xml` (every page in both languages, each with its translations)
+and `dist/robots.txt`, which points to it, from `LOCALES` and `GAME_ROUTES`: a new game is in the
+sitemap with no extra step.
+
+Each page also describes itself as structured data (schema.org JSON-LD, `src/lib/schema.ts`): the
+studio as an `Organization` and the site as a `WebSite` on the studio's page, the game as a
+`MobileApplication` (free, Android, its store listings as `sameAs`) on its page.
+
+The blog, at `blog.puzzlebazi.studio`, is a separate site, so it's tied to this one on purpose:
+
+- The studio and each game keep one fixed `@id` on both sites (`https://puzzlebazi.studio/#organization`,
+  `https://puzzlebazi.studio/#sort-puzzle`): the blog's posts name the studio as their author and
+  publisher and the game as what they're `about`. Keep `src/lib/schema.ts` and
+  `blog/src/lib/schema.ts` in step.
+- Posts link to the game's page here, with its name as the link's text: where they first mention
+  it, and in the card that closes every post about a game. These are plain links that pass ranking
+  value to this site, and they keep the referrer, so Analytics shows the visits the blog sends.
+- This site links to the blog from the studio's footer.
+
+Add the domain to Google Search Console as a **Domain** property (`puzzlebazi.studio`, verified
+with a DNS record). It covers the site and the blog together; submit both sitemaps there,
+`https://puzzlebazi.studio/sitemap.xml` and `https://blog.puzzlebazi.studio/sitemap.xml`.
+
 ## Before publishing
 
 | What | Where |
@@ -83,6 +110,8 @@ replace or add one, crop it the same way and set its `width` and `height` in `ST
    to `GAMES` in `src/games/registry.ts`. The studio's home page and footer list it from there.
 4. Put its share images at `public/og/<slug>-fa.jpg` and `-en.jpg` (1200 × 630), and its icons in
    `public/<slug>/`.
+5. In the blog, add it to `GAMES` in `blog/src/lib/games.ts` (and a topic for it), with its page's
+   section ids, so posts about it link to its page and its sections. The sitemap and the game's structured data come from the steps above.
 
 The shared building blocks are in `src/components/`: the navbar, footer and language switch, the
 game-style buttons and cards, the studio's icon, logotype and card, and the store badges.
@@ -215,6 +244,7 @@ view is tagged with its `page` (`studio`, `sort-puzzle`) and `language` (`fa`, `
 | `gallery_browse` | A screenshot chosen in the gallery (not the autoplay) | `shot`, `how` (`arrow`, `dot`, `swipe`, `tap`) |
 | `studio_visit` | From a game's page to the studio's | |
 | `game_open` | From the studio's page to a game's | `game`, `place` (`games`, `footer`) |
+| `blog_visit` | From the studio's page to the blog | `place` (`footer`) |
 
 In Clarity's dashboard, filter recordings by these under *Custom events* and *Custom tags*. Visitors
 from the EEA, the UK and Switzerland need a consent signal (`Clarity.consentV2`) before Clarity

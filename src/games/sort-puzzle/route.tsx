@@ -5,6 +5,7 @@ import { notFoundMeta, pageMeta } from '../../i18n/meta'
 import { useSectionViews } from '../../hooks/useSectionViews'
 import { UI } from '../../i18n/ui'
 import { track } from '../../lib/analytics'
+import { gameApp, graph, organization } from '../../lib/schema'
 import type { PageHandle } from '../../root'
 import type { Route } from './+types/route'
 import { GameLogo } from './components/GameLogo'
@@ -20,19 +21,27 @@ import { HowToPlay } from './sections/HowToPlay'
 import { Mechanics } from './sections/Mechanics'
 import { Stages } from './sections/Stages'
 import { Studio } from './sections/Studio'
-import { STORES } from './stores'
+import { MIN_ANDROID, STORES } from './stores'
 
 export const meta: Route.MetaFunction = ({ params }) => {
   if (!isLocale(params.lang)) return notFoundMeta(UI[DEFAULT_LOCALE].notFound.title)
   const locale = params.lang
   const { meta } = contentFor(locale)
-  return pageMeta({
-    locale,
-    page: SORT_PUZZLE.slug,
-    ...meta,
-    siteName: SORT_PUZZLE.name[locale],
-    image: `/og/sort-puzzle-${locale}.jpg`,
-  })
+  return [
+    ...pageMeta({
+      locale,
+      page: SORT_PUZZLE.slug,
+      ...meta,
+      siteName: SORT_PUZZLE.name[locale],
+      image: `/og/sort-puzzle-${locale}.jpg`,
+    }),
+    {
+      'script:ld+json': graph(
+        organization(locale),
+        gameApp(SORT_PUZZLE, locale, { stores: STORES, operatingSystem: `Android ${MIN_ANDROID}+` }),
+      ),
+    },
+  ]
 }
 
 /** The page wears the game's flat art (Sort Puzzle 2.0), from its first paint. */

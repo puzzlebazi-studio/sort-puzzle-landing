@@ -34,7 +34,7 @@ interface StudioContent {
     story: string
     values: Record<ValueId, Item>
   }
-  footer: { blurb: string; games: string; studio: string }
+  footer: { blurb: string; games: string; studio: string; blog: string }
 }
 
 /** What the studio cares about, shown under its card. */
@@ -84,6 +84,7 @@ const CONTENT: Localized<StudioContent> = {
       blurb: 'استودیوی مستقل ایرانی که بازی‌های فکری و رنگی برای موبایل می‌سازد.',
       games: 'بازی‌ها',
       studio: 'استودیو',
+      blog: 'وبلاگ',
     },
   },
   en: {
@@ -124,6 +125,7 @@ const CONTENT: Localized<StudioContent> = {
       blurb: 'An independent Iranian studio making colorful puzzle games for mobile.',
       games: 'Games',
       studio: 'Studio',
+      blog: 'Blog',
     },
   },
 }

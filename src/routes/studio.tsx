@@ -7,6 +7,8 @@ import { DEFAULT_LOCALE, isLocale, localePath } from '../i18n/locales'
 import { notFoundMeta, pageMeta } from '../i18n/meta'
 import { UI } from '../i18n/ui'
 import { track } from '../lib/analytics'
+import { graph, organization, website } from '../lib/schema'
+import { BLOG_URL } from '../site'
 import { StudioMark } from '../studio/components/StudioMark'
 import { studioContent, useStudioContent } from '../studio/content'
 import { About } from '../studio/sections/About'
@@ -19,14 +21,17 @@ export const meta: Route.MetaFunction = ({ params }) => {
   if (!isLocale(params.lang)) return notFoundMeta(UI[DEFAULT_LOCALE].notFound.title)
   const locale = params.lang
   const t = studioContent(locale)
-  return pageMeta({
-    locale,
-    page: '',
-    title: t.meta.title,
-    description: t.meta.description,
-    siteName: STUDIO.name[locale],
-    image: `/og/studio-${locale}.jpg`,
-  })
+  return [
+    ...pageMeta({
+      locale,
+      page: '',
+      title: t.meta.title,
+      description: t.meta.description,
+      siteName: STUDIO.name[locale],
+      image: `/og/studio-${locale}.jpg`,
+    }),
+    { 'script:ld+json': graph(organization(locale), website(locale)) },
+  ]
 }
 
 /** The studio's home page: who we are and the games we make. */
@@ -67,6 +72,7 @@ export default function StudioPage() {
             links: [
               { label: t.nav.games, href: '#games' },
               { label: t.nav.about, href: '#about' },
+              { label: t.footer.blog, href: `${BLOG_URL}/${locale}`, onClick: () => track('blog_visit', { place: 'footer' }) },
             ],
           },
         ]}
