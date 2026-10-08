@@ -4,7 +4,7 @@ import { Fragment, type ComponentType } from 'react'
 import { AbsoluteFill, Easing, interpolate, staticFile, useVideoConfig } from 'remotion'
 import { circleWipe } from '../../brand/wipe'
 import { Challenges } from './scenes/Challenges'
-import { Cta } from './scenes/Cta'
+import { Cta, STORES, type Store } from './scenes/Cta'
 import { Designs } from './scenes/Designs'
 import { Hook } from './scenes/Hook'
 import { Play } from './scenes/Play'
@@ -14,7 +14,7 @@ import { DURATION, SCENES, TRANSITION, type SceneId } from './timeline'
 
 export { DURATION, FPS } from './timeline'
 
-const SCENE: Record<SceneId, ComponentType> = {
+const SCENE: Record<SceneId, ComponentType<{ stores: Store[] }>> = {
   hook: Hook,
   play: Play,
   stages: Stages,
@@ -27,9 +27,9 @@ const SCENE: Record<SceneId, ComponentType> = {
 /**
  * Sort Puzzle's launch ad, 28.5 s: the hook, the core loop, depth (stages, challenges), collecting
  * (designs, rewards) and the call to action. Every layout adapts to the frame, so the same
- * composition renders 16:9 and 9:16.
+ * composition renders 16:9 and 9:16. `stores` picks the end card's badges (both by default).
  */
-export function SortPuzzleLaunch() {
+export function SortPuzzleLaunch({ stores = STORES }: { stores?: Store[] }) {
   const { width, height } = useVideoConfig()
   const ring = Math.min(width, height) * 0.012
   return (
@@ -46,7 +46,7 @@ export function SortPuzzleLaunch() {
                 />
               )}
               <TransitionSeries.Sequence durationInFrames={scene.frames} name={scene.id}>
-                <Scene />
+                <Scene stores={stores} />
               </TransitionSeries.Sequence>
             </Fragment>
           )

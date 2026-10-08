@@ -11,8 +11,19 @@ import { Frame, Pop, Sfx } from '../parts'
 /** The music's last chord, six beats into this scene (scripts/make-music.ts): the logo and badges bounce on it. */
 const FINAL = 6 * BEAT
 
-/** The call to action: the game, its line, and where to get it. */
-export function Cta() {
+export type Store = 'bazaar' | 'myket'
+
+/** Every store the game is in, in reading order: Cafe Bazaar on the right. */
+export const STORES: Store[] = ['bazaar', 'myket']
+
+const BADGES: Record<Store, { src: string; w: number; h: number }> = {
+  bazaar: { src: 'stores/cafebazaar-logo-badge-fa.png', w: 421, h: 125 },
+  myket: { src: 'stores/myket-logo-badge-fa.png', w: 966, h: 287 },
+}
+const BADGE_SFX = ['select', 'select_2'] as const
+
+/** The call to action: the game, its line, and where to get it (`stores`, in reading order). */
+export function Cta({ stores = STORES }: { stores?: Store[] }) {
   const frame = useCurrentFrame()
   const { width, portrait } = useLayout()
   const pulse = 1 + 0.08 * (frame >= FINAL ? Math.sin(Math.min(1, (frame - FINAL) / 10) * Math.PI) : 0)
@@ -24,9 +35,13 @@ export function Cta() {
   const badges = portrait ? { y: 1330, h: 136, gap: 34 } : { y: 860, h: 120, gap: 34 }
   const studio = portrait ? { x: width / 2, y: 1690, h: 170 } : { x: 230, y: 975, h: 120 }
 
-  const bazaarW = (badges.h * 421) / 125
-  const myketW = (badges.h * 966) / 287
-  const rowW = bazaarW + badges.gap + myketW
+  // The badges' row, centered and laid out right to left; each one pops six frames after the last.
+  const widths = stores.map((store) => (badges.h * BADGES[store].w) / BADGES[store].h)
+  const rowW = widths.reduce((sum, w) => sum + w, 0) + badges.gap * (stores.length - 1)
+  const row = stores.map((store, i) => {
+    const before = widths.slice(0, i).reduce((sum, w) => sum + w + badges.gap, 0)
+    return { store, x: width / 2 + rowW / 2 - before - widths[i] / 2, at: 38 + 6 * i, sfx: BADGE_SFX[i % BADGE_SFX.length] }
+  })
 
   return (
     <Frame>
@@ -66,13 +81,11 @@ export function Cta() {
         </Pill>
       </Pop>
 
-      {/* The stores, in reading order: Cafe Bazaar on the right. */}
-      <Pop at={38} x={width / 2 + rowW / 2 - bazaarW / 2} y={badges.y}>
-        <Img src={staticFile('stores/cafebazaar-logo-badge-fa.png')} style={{ height: badges.h, display: 'block', transform: `scale(${pulse})`, filter: `drop-shadow(0 8px 0 rgb(46 37 69 / 0.45))` }} />
-      </Pop>
-      <Pop at={44} x={width / 2 - rowW / 2 + myketW / 2} y={badges.y}>
-        <Img src={staticFile('stores/myket-logo-badge-fa.png')} style={{ height: badges.h, display: 'block', transform: `scale(${pulse})`, filter: `drop-shadow(0 8px 0 rgb(46 37 69 / 0.45))` }} />
-      </Pop>
+      {row.map(({ store, x, at }) => (
+        <Pop key={store} at={at} x={x} y={badges.y}>
+          <Img src={staticFile(BADGES[store].src)} style={{ height: badges.h, display: 'block', transform: `scale(${pulse})`, filter: `drop-shadow(0 8px 0 rgb(46 37 69 / 0.45))` }} />
+        </Pop>
+      ))}
 
       <Pop at={54} x={studio.x} y={studio.y}>
         <Img src={staticFile('studio/logotype-fa.svg')} style={{ height: studio.h, display: 'block' }} />
@@ -83,8 +96,9 @@ export function Cta() {
       <Sparkle size={44} style={{ left: portrait ? 860 : 1220, top: portrait ? 120 : 80 }} />
 
       <Sfx at={4} name="reveal" volume={0.4} />
-      <Sfx at={38} name="select" volume={0.4} />
-      <Sfx at={44} name="select_2" volume={0.4} />
+      {row.map(({ store, at, sfx }) => (
+        <Sfx key={store} at={at} name={sfx} volume={0.4} />
+      ))}
       <Sfx at={FINAL} name="achievement" volume={0.4} />
     </Frame>
   )

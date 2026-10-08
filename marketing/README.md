@@ -14,6 +14,8 @@ pnpm studio                     # Remotion Studio: preview, scrub and tweak ever
 pnpm music                      # synthesizes the ads' music into public/music/ (studio and render do it first)
 pnpm render                     # every ad at every size → out/*.mp4
 pnpm render:ad                  # Sort Puzzle's launch ad, both sizes
+pnpm render sort-puzzle-launch-myket                 # its Myket-only cut (16:9)
+pnpm render sort-puzzle-launch-bazaar                # its Cafe Bazaar-only cut (16:9)
 pnpm render sort-puzzle-launch --frames 60,130,295   # stills of some frames, to check a layout
 pnpm render:stills              # the banners and share images → out/stills/*.jpg
 pnpm typecheck
@@ -31,6 +33,8 @@ graph whose layouts adapt to the frame:
 | --- | --- | --- |
 | `sort-puzzle-launch-16x9` | 1920 × 1080 | YouTube, Aparat, Telegram, the site |
 | `sort-puzzle-launch-9x16` | 1080 × 1920 | Instagram Reels and Stories, phone ads |
+| `sort-puzzle-launch-myket-16x9` | 1920 × 1080 | Myket's channels: the same ad, its end card with only the Myket badge |
+| `sort-puzzle-launch-bazaar-16x9` | 1920 × 1080 | Cafe Bazaar's channels: the same ad, its end card with only the Cafe Bazaar badge |
 
 H.264 (High, BT.709) with 192 kb/s AAC; the soundtrack is normalized to -14 LUFS, 1.5 dB under full
 scale, after rendering.

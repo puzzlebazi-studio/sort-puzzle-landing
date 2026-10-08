@@ -24,6 +24,8 @@ const OUT = join(ROOT, 'out')
 /** Each ad and the compositions (see src/Root.tsx) it renders. */
 const ADS: Record<string, string[]> = {
   'sort-puzzle-launch': ['sort-puzzle-launch-16x9', 'sort-puzzle-launch-9x16'],
+  'sort-puzzle-launch-myket': ['sort-puzzle-launch-myket-16x9'],
+  'sort-puzzle-launch-bazaar': ['sort-puzzle-launch-bazaar-16x9'],
   stills: ['sort-puzzle-share-fa', 'sort-puzzle-share-en'],
 }
 
