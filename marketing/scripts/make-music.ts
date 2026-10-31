@@ -1,18 +1,26 @@
 /**
- * Composes and renders the music of Sort Puzzle's launch ad into public/music/sort-puzzle-launch.wav.
+ * Composes and renders the ads' music into public/music/<ad>.wav.
  *
  *     pnpm music
  *
- * One original, bright and bouncy cue in F major at 120 BPM, as long as the ad (28.5 s), cut to
- * its timeline: a sparkle and a riser under the hook, the full groove from the first pour (four on
- * the floor with a pumping bass, marimba arpeggios and a bell tune), a crash and a whoosh on every
+ * One original, bright and bouncy cue per ad in F major at 120 BPM, as long as the ad and cut to
+ * its timeline: a sparkle and a riser under the hook, the full groove from the drop (four on the
+ * floor with a pumping bass, marimba arpeggios and a bell tune), a crash and a whoosh on every
  * wipe, and a last F major chord that rings out under the end card. The game's own music
  * (Tools/Audio/make_music.py) is calmer; this keeps its marimba and bell. Deterministic, no samples.
+ *
+ * - sort-puzzle-launch (28.5 s): the drop on the first pour, ghost hats from the stages scene.
+ * - studio-generator (22.5 s): ticks under the hook while the counter runs, a hit on every stamp,
+ *   and a sparkle when the one layout is left.
+ * - sort-puzzle-installs (15 s): ticks under the count, and the drop, a hit and a sparkle on the
+ *   frame it lands.
  */
 import { mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BEAT, DURATION, FPS, SCENE_STARTS } from '../src/ads/sort-puzzle-launch/timeline.ts'
+import * as launch from '../src/ads/sort-puzzle-launch/timeline.ts'
+import * as installs from '../src/ads/sort-puzzle-installs/timeline.ts'
+import * as generator from '../src/ads/studio-generator/timeline.ts'
 import {
   bass,
   bell,
@@ -36,12 +44,78 @@ import {
   writeWav,
 } from './lib/dsp.ts'
 
-const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'music', 'sort-puzzle-launch.wav')
+const MUSIC = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'music')
 
-const SECONDS = DURATION / FPS
-const B = BEAT / FPS // one beat in seconds (0.5)
-const at = (beat: number) => beat * B
-const beatOf = (frame: number) => frame / BEAT
+/** One ad's cue, read off its timeline. Beats count from the ad's first frame. */
+interface Cue {
+  /** Written to public/music/<name>.wav. */
+  name: string
+  seed: number
+  fps: number
+  /** One beat, in frames. */
+  beat: number
+  /** The whole ad, in frames. */
+  duration: number
+  /** The frame every wipe starts on (a 0 is skipped). */
+  wipes: number[]
+  /** Where the groove starts. */
+  drop: number
+  /** Where the sixteenth ghost hats join it. */
+  ghosts: number
+  /** Where the end card starts; the last chord lands six beats later. */
+  cadence: number
+  /** Sixteenth ticks from the first beat to the second, under the hook. */
+  ticks?: [number, number]
+  /** Beats with a stamp's hit: a crash, a low thump and a clap. */
+  hits?: number[]
+  /** Beats with a bell sparkle. */
+  sparkles?: number[]
+}
+
+const CUES: Cue[] = [
+  {
+    name: 'sort-puzzle-launch',
+    seed: 20261006,
+    fps: launch.FPS,
+    beat: launch.BEAT,
+    duration: launch.DURATION,
+    wipes: Object.values(launch.SCENE_STARTS),
+    // The first pour, when the play scene's wipe ends.
+    drop: launch.SCENE_STARTS.play / launch.BEAT,
+    ghosts: launch.SCENE_STARTS.stages / launch.BEAT,
+    cadence: launch.SCENE_STARTS.cta / launch.BEAT,
+  },
+  {
+    name: 'studio-generator',
+    seed: 20261025,
+    fps: generator.FPS,
+    beat: generator.BEAT,
+    duration: generator.DURATION,
+    wipes: Object.values(generator.SCENE_STARTS),
+    // The filter, when the candidates start to go.
+    drop: generator.SCENE_STARTS.filter / generator.BEAT,
+    ghosts: generator.SCENE_STARTS.sorted / generator.BEAT,
+    cadence: generator.SCENE_STARTS.end / generator.BEAT,
+    ticks: [0, generator.SCENE_STARTS.filter / generator.BEAT],
+    hits: (['sorted', 'range', 'duplicate'] as const).map((id) => (generator.SCENE_STARTS[id] + generator.STAMP_AT) / generator.BEAT),
+    sparkles: [(generator.SCENE_STARTS.filter + generator.SURVIVOR_AT) / generator.BEAT],
+  },
+  {
+    name: 'sort-puzzle-installs',
+    seed: 20261031,
+    fps: installs.FPS,
+    beat: installs.BEAT,
+    duration: installs.DURATION,
+    wipes: Object.values(installs.SCENE_STARTS),
+    // The count landing on its number.
+    drop: installs.LAND / installs.BEAT,
+    ghosts: installs.SCENE_STARTS.stores / installs.BEAT,
+    cadence: installs.SCENE_STARTS.end / installs.BEAT,
+    ticks: [0, installs.LAND / installs.BEAT],
+    hits: [installs.LAND / installs.BEAT],
+    sparkles: [installs.LAND / installs.BEAT],
+  },
+]
 
 // Chords as (bass root, chord tones low to high).
 const CHORDS: Record<string, [string, string[]]> = {
@@ -49,20 +123,6 @@ const CHORDS: Record<string, [string, string[]]> = {
   C: ['C2', ['E4', 'G4', 'C5', 'E5']],
   Dm: ['D2', ['D4', 'F4', 'A4', 'D5']],
   Bb: ['Bb1', ['D4', 'F4', 'Bb4', 'D5']],
-}
-
-/** Where the groove starts: the first pour, when the play scene's wipe ends. */
-const DROP = beatOf(SCENE_STARTS.play)
-/** The final chord: two bars into the end card. */
-const FINAL = beatOf(SCENE_STARTS.cta) + 6
-
-/** The chord under each four-beat block from the drop, then the end card's cadence. */
-function chordAt(beat: number): string {
-  if (beat < DROP) return beat < 4 ? 'F' : 'C'
-  if (beat >= FINAL) return 'F'
-  const cta = beatOf(SCENE_STARTS.cta)
-  if (beat >= cta) return beat < cta + 4 ? 'Bb' : 'C'
-  return ['F', 'C', 'Dm', 'Bb'][Math.floor((beat - DROP) / 4) % 4]
 }
 
 // The bell's tune over one pass of F–C–Dm–Bb, as (beat in the four bars, note, length in beats).
@@ -73,8 +133,24 @@ const TUNE: [number, string, number][] = [
   [12, 'F5', 0.5], [12.5, 'D5', 0.5], [13, 'Bb4', 0.5], [13.5, 'D5', 0.5], [14, 'F5', 1.5], [15.5, 'C5', 0.5],
 ]
 
-function compose() {
-  const rng = random(20261006)
+function compose(cue: Cue) {
+  const SECONDS = cue.duration / cue.fps
+  const B = cue.beat / cue.fps // one beat in seconds (0.5)
+  const at = (beat: number) => beat * B
+  const DROP = cue.drop
+  /** The final chord: two bars into the end card. */
+  const FINAL = cue.cadence + 6
+
+  /** The chord under each four-beat block from the drop, then the end card's cadence. */
+  function chordAt(beat: number): string {
+    if (beat < DROP) return beat < 4 ? 'F' : 'C'
+    if (beat >= FINAL) return 'F'
+    const cta = cue.cadence
+    if (beat >= cta) return beat < cta + 4 ? 'Bb' : 'C'
+    return ['F', 'C', 'Dm', 'Bb'][Math.floor((beat - DROP) / 4) % 4]
+  }
+
+  const rng = random(cue.seed)
   const total = SECONDS + 0.05
   const drums = new Stereo(total)
   const music = new Stereo(total) // pumped by the kick
@@ -88,7 +164,7 @@ function compose() {
   }
 
   const kicks: number[] = []
-  const end = beatOf(DURATION)
+  const end = cue.duration / cue.beat
 
   // ---- the hook: an impact, a rising sparkle with the title, a riser into the drop
   kicks.push(0)
@@ -96,7 +172,7 @@ function compose() {
   both(music, bass(note('F1'), 1.2), 0, 0.5)
   ;['C5', 'F5', 'A5', 'C6', 'F6'].forEach((n, i) => both(lead, bell(note(n), 0.4), at(0.25 + i * 0.25), 0.22, 0.2, 0.5))
   both(fx, riser(rng, at(DROP) - at(DROP - 2)), at(DROP - 2), 0.3)
-  kicks.push(4)
+  kicks.push(DROP - 2)
 
   // ---- groove
   for (let beat = 0; beat < end; beat += 0.5) {
@@ -117,8 +193,8 @@ function compose() {
     } else {
       both(drums, hat(rng, Math.round(beat * 2) % 8 === 7), at(beat), 0.11, 0.35)
     }
-    // From the stages scene on: sixteenth ghost hats for more drive.
-    if (beat >= beatOf(SCENE_STARTS.stages)) both(drums, hat(rng), at(beat + 0.25), 0.045, 0.45)
+    // Sixteenth ghost hats for more drive, from the cue's `ghosts` on.
+    if (beat >= cue.ghosts) both(drums, hat(rng), at(beat + 0.25), 0.045, 0.45)
 
     // Bass: a bouncy figure every four beats.
     if ((beat - DROP) % 4 === 0) {
@@ -140,7 +216,7 @@ function compose() {
   }
 
   // ---- the bell's tune, from the drop until the end card's cadence
-  const cta = beatOf(SCENE_STARTS.cta)
+  const cta = cue.cadence
   for (let start = DROP; start < cta; start += 16) {
     for (const [offset, n, length] of TUNE) {
       const beat = start + offset
@@ -156,10 +232,10 @@ function compose() {
   )
 
   // ---- every wipe: a whoosh into it and a crash on it
-  for (const frame of Object.values(SCENE_STARTS)) {
+  for (const frame of cue.wipes) {
     if (frame === 0) continue
-    both(fx, whoosh(rng), Math.max(0, frame / FPS - 0.12), 0.32, 0)
-    both(fx, crash(rng), frame / FPS + B, 0.17, 0.2)
+    both(fx, whoosh(rng), Math.max(0, frame / cue.fps - 0.12), 0.32, 0)
+    both(fx, crash(rng), frame / cue.fps + B, 0.17, 0.2)
   }
   both(fx, riser(rng, at(2)), at(FINAL - 2), 0.22)
 
@@ -174,6 +250,19 @@ function compose() {
   for (const t of ['F3', 'A3', 'C4', 'F4']) {
     const pad = lowpass(voice(SAW, note(t), SECONDS - at(FINAL) - 0.6, 0.05, 0.6), 1800)
     both(music, pad, at(FINAL), 0.05, 0, 0.7)
+  }
+
+  // ---- the cue's own marks, after everything above so they never change another cue's randomness
+  if (cue.ticks) {
+    for (let beat = cue.ticks[0]; beat < cue.ticks[1]; beat += 0.25) both(drums, hat(rng), at(beat), beat % 1 === 0 ? 0.07 : 0.04, 0.3)
+  }
+  for (const beat of cue.hits ?? []) {
+    both(fx, crash(rng), at(beat), 0.24, -0.2)
+    both(music, lowpass(bass(note('F1'), 0.45), 900), at(beat), 0.55)
+    both(drums, clap(rng), at(beat), 0.32, 0, 0.4)
+  }
+  for (const beat of cue.sparkles ?? []) {
+    ;['C6', 'F6', 'A6', 'C7'].forEach((n, i) => both(lead, bell(note(n), 0.35), at(beat) + i * 0.06, 0.16, 0.25, 0.6))
   }
 
   // Kicks, and the pump they give everything else (a sidechain duck).
@@ -209,8 +298,11 @@ function compose() {
   return out
 }
 
-mkdirSync(dirname(OUT), { recursive: true })
-const started = Date.now()
-const track = compose()
-writeWav(OUT, track, 0.89)
-console.log(`${OUT}  ${(track.left.length / SR).toFixed(2)} s stereo, ${((Date.now() - started) / 1000).toFixed(1)} s to render`)
+mkdirSync(MUSIC, { recursive: true })
+for (const cue of CUES) {
+  const started = Date.now()
+  const out = join(MUSIC, `${cue.name}.wav`)
+  const track = compose(cue)
+  writeWav(out, track, 0.89)
+  console.log(`${out}  ${(track.left.length / SR).toFixed(2)} s stereo, ${((Date.now() - started) / 1000).toFixed(1)} s to render`)
+}

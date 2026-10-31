@@ -17,6 +17,8 @@ pnpm render:ad                  # Sort Puzzle's launch ad, both sizes
 pnpm render sort-puzzle-launch-myket                 # its Myket-only cut (16:9)
 pnpm render sort-puzzle-launch-bazaar                # its Cafe Bazaar-only cut (16:9)
 pnpm render sort-puzzle-launch --frames 60,130,295   # stills of some frames, to check a layout
+pnpm render sort-puzzle-installs                     # the +1,300 installs story (9:16, Instagram)
+pnpm render studio-generator                         # the studio's generator reel (9:16, Instagram)
 pnpm render:stills              # the banners and share images → out/stills/*.jpg
 pnpm typecheck
 ```
@@ -74,6 +76,46 @@ pours, a bottle filling, the win, stars, coins and the reward, each placed on it
 The same as the site's: no promise that every stage is solvable, no «کاملاً فارسی», the stage
 count only as "+۱۰۰۰" (it keeps growing), the game only from Cafe Bazaar and Myket (no APK), and
 credit to پازل‌بازی استودیو.
+
+## Sort Puzzle: the installs story
+
+`src/ads/sort-puzzle-installs/`, 15 s at 30 fps (one story), 1080 × 1920 only
+(`sort-puzzle-installs-9x16`), for Instagram Stories: «+۱٬۳۰۰ نصب در کافه‌بازار و مایکت» and a
+thank-you to the players. In Persian with no voiceover. Text stays inside the story's safe zone
+(`SAFE` in `parts.tsx`: nothing above y = 270 or below 1650, where the progress bar and the reply
+bar sit), and the end card keeps y = 1480–1650 free for a link sticker. The count is `value` in
+`copy.ts`: change it and render again for the next milestone.
+
+| Scene | Seconds | What it shows |
+| --- | --- | --- |
+| Count | 0–5 | The logo, «+۱٬۳۰۰» running up from 0 while five bottles fill one color each; it lands on the drop with stars and confetti (butter) |
+| Stores | 4.5–8.5 | «+۱٬۳۰۰ نصب»، «در کافه‌بازار و مایکت», both badges, hearts floating up (sky) |
+| End card | 8–15 | The icon, the logo, «ممنونیم!» «که سورت پازل رو بازی می‌کنید», both badges and the studio (violet) |
+
+Its music is a third cue in `scripts/make-music.ts`: ticks under the count, and the drop, a hit and
+a sparkle on the frame it lands.
+
+## Studio: the generator reel
+
+`src/ads/studio-generator/`, 22.5 s at 30 fps, 1080 × 1920 only (`studio-generator-9x16`), for the
+studio's Instagram: how the stage generator keeps about one layout in 450. In Persian with no
+voiceover: each line of the script is burned in as a caption. Text stays inside Instagram's safe
+zone (`SAFE` in `parts.tsx`: nothing above y = 230 or below 1440, nothing right of x = 850, where
+the action rail sits).
+
+| Scene | Seconds | What it shows |
+| --- | --- | --- |
+| Hook | 0–3.5 | «۱ از ۴۵۰» up from the first frame, the counter running to ۴۵۰٬۰۰۰, nine candidates flickering (sky) |
+| Filter | 3–8.5 | Eight candidates gray out and fall, «۴۴۹تا کنار رفت»; on the beat, the cut to the one left (the game's ground) |
+| Sorted | 8–11 | A layout that looks sorted already, stamped «حذف» (peach) |
+| Range | 10.5–13.5 | A stage-8 layout whose difficulty slides to stage 800's on the track, stamped «حذف» (pink) |
+| Duplicate | 13–16 | The same layout in other colors, stamped «تکراری» (lilac) |
+| Funnel | 15.5–18.5 | ۴۵۰٬۰۰۰ in, ۱۵٬۰۰۰ out (mint) |
+| End card | 18–22.5 | The icon, the logo, «از هر ۴۵۰تا، همون یکی», «لینک توی بیو» and the studio (violet) |
+
+The facts are the game's stage pipeline (`sorting-puzzle/README.md`); `copy.ts` says which. Its
+music is a second cue in `scripts/make-music.ts`, the launch ad's key, tempo and instruments with
+ticks under the counter, a hit on every stamp and a sparkle on the cut to the one left.
 
 ## Banners and share images
 

@@ -26,6 +26,8 @@ const ADS: Record<string, string[]> = {
   'sort-puzzle-launch': ['sort-puzzle-launch-16x9', 'sort-puzzle-launch-9x16'],
   'sort-puzzle-launch-myket': ['sort-puzzle-launch-myket-16x9'],
   'sort-puzzle-launch-bazaar': ['sort-puzzle-launch-bazaar-16x9'],
+  'sort-puzzle-installs': ['sort-puzzle-installs-9x16'],
+  'studio-generator': ['studio-generator-9x16'],
   stills: ['sort-puzzle-share-fa', 'sort-puzzle-share-en'],
 }
 
