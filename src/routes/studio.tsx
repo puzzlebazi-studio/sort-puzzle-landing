@@ -8,7 +8,6 @@ import { notFoundMeta, pageMeta } from '../i18n/meta'
 import { UI } from '../i18n/ui'
 import { track } from '../lib/analytics'
 import { graph, organization, website } from '../lib/schema'
-import { BLOG_URL } from '../site'
 import { StudioMark } from '../studio/components/StudioMark'
 import { studioContent, useStudioContent } from '../studio/content'
 import { About } from '../studio/sections/About'
@@ -72,7 +71,6 @@ export default function StudioPage() {
             links: [
               { label: t.nav.games, href: '#games' },
               { label: t.nav.about, href: '#about' },
-              { label: t.footer.blog, href: `${BLOG_URL}/${locale}`, onClick: () => track('blog_visit', { place: 'footer' }) },
             ],
           },
         ]}

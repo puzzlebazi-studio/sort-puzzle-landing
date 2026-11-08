@@ -7,7 +7,6 @@
     "dev": "react-router dev",
     "build": "react-router typegen && tsc -b && react-router build",
     "preview": "vite preview --config vite.preview.config.ts",
-    "deploy:liara": "pnpm build && liara deploy --path dist --platform static",
     "typecheck": "react-router typegen && tsc -b",
     "lint": "oxlint"
   },

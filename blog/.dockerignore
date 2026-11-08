@@ -1,9 +1,0 @@
-# Kept out of the Docker build, and out of what `liara deploy` uploads (it reads this file).
-node_modules
-.next
-next-env.d.ts
-*.tsbuildinfo
-.git
-.DS_Store
-Dockerfile
-.dockerignore

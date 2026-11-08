@@ -6,9 +6,7 @@ import { STUDIO } from '../studio/studio'
 
 /**
  * Structured data (schema.org JSON-LD) for search engines. The studio and each game have one fixed
- * `@id`, which the blog (blog.puzzlebazi.studio) uses too: search engines then read the site and
- * the blog as one publisher, and a post about a game as being about the game on this site. Keep
- * these ids and the studio's details in step with blog/src/lib/schema.ts.
+ * `@id`, so every page names the same publisher and the same game.
  */
 export const ORGANIZATION_ID = absoluteUrl('/#organization')
 export const gameId = (slug: string) => absoluteUrl(`/#${slug}`)

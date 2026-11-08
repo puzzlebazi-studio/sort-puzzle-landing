@@ -28,8 +28,6 @@ export type AnalyticsEvent =
   | 'studio_visit'
   /** From the studio's page to a game's. Tags: game, place. */
   | 'game_open'
-  /** From the studio's page to the blog (blog.puzzlebazi.studio). Tags: place. */
-  | 'blog_visit'
   /** A section scrolled to the middle of the screen, once per page view: `view_<section id>`. */
   | `view_${string}`
 

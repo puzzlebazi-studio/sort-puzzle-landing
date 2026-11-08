@@ -16,16 +16,13 @@ React 19, React Router 8 (framework mode), TypeScript, Tailwind CSS 4 and Vite. 
 site, Persian and English, is set in Lahzeh, the game's own type; so are the share images, banners
 and ads. The studio's pages were designed in Lalezar, so there Lahzeh stands in for it at the same
 measure ("Lahzeh Studio" in `index.css`: a weight heavier and set at 80%); Sort Puzzle's page uses
-Lahzeh as is. The ads are made in `marketing/`, a separate package (see *Ads and banners*). The blog, at
-`blog.puzzlebazi.studio`, is `blog/`: another separate package, a Next.js app shipped as its own
-Docker image (see `blog/README.md`).
+Lahzeh as is. The ads are made in `marketing/`, a separate package (see *Ads and banners*).
 
 ```bash
 pnpm install
 pnpm dev        # http://localhost:5173
 pnpm build      # type-checks, then renders every page to static HTML in dist/
 pnpm preview    # serves dist/ the way a static host does
-pnpm deploy:liara  # builds and uploads dist/ to Liara (see Deploying)
 pnpm typecheck
 pnpm lint
 ```
@@ -33,7 +30,7 @@ pnpm lint
 ## Deploying
 
 `dist/` is a plain static site: upload that folder to any static host (Netlify, Vercel,
-Cloudflare Pages, Liara, an nginx folder). Each page is its own `index.html` (`fa/index.html`,
+Cloudflare Pages, GitHub Pages, an nginx folder). Each page is its own `index.html` (`fa/index.html`,
 `en/sort-puzzle/index.html`…) with its own title, description and share preview, so links shared
 on Telegram or Instagram show the right page in the right language.
 
@@ -41,24 +38,30 @@ on Telegram or Instagram show the right page in the right language.
 nginx needs `error_page 404 /404.html;`. React Router builds in `.react-router/build/` first
 (pre-rendering needs a server build); the build keeps only the site and moves it to `dist/`.
 
-### Liara
+### GitHub Pages
 
-The site runs on a **Static** app, which serves the files it receives as they are and runs no
-build. So deploy the built `dist/`, never the project folder or the GitHub repo: connected to the
-repo, the app serves the source and answers with a 503 about a missing `index.html`.
+`.github/workflows/deploy.yml` builds the site and publishes `dist/` to GitHub Pages on every push
+to `main` (pushes that only touch `marketing/`, `brand/` or Markdown are skipped). Run it
+by hand from the repo's **Actions** tab. GitHub Pages serves `fa/index.html` at `/fa/`, redirects
+`/fa` to `/fa/`, and serves `404.html` for unknown paths, so it needs no extra config.
 
-```bash
-pnpm dlx @liara/cli login   # once
-pnpm deploy:liara           # builds, then uploads dist/; add --app <app-id> to skip picking the app
-```
+One-time setup, in the repo's **Settings → Pages**:
 
-Or zip the files inside `dist/` (so `index.html` is at the top of the zip, not in a `dist` folder)
-and upload the zip as a new deployment in the console.
+1. **Source**: GitHub Actions.
+2. **Custom domain**: `puzzlebazi.studio`. (With an Actions deployment, a `CNAME` file in the site
+   is ignored, so the domain lives in this setting only.)
+3. **Enforce HTTPS**, once GitHub has issued the certificate.
 
-`public/liara_nginx.conf` lands at the root of `dist/`, where Liara looks for it. It
-replaces Liara's default nginx rules, which answer every unknown address with `/index.html` (here,
-the redirect to `/fa/`): unknown addresses get `404.html` instead, and it turns on gzip and browser
-caching (a year for the build's content-hashed `assets/`).
+DNS for `puzzlebazi.studio` (the apex):
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
+| AAAA | `@` | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| CNAME | `www` | `alirezahematidev.github.io` |
+
+GitHub Pages caches every file for 10 minutes and its cache can't be configured, so the build's
+content-hashed `assets/` no longer get a year-long browser cache.
 
 ## Search engines
 
@@ -70,20 +73,8 @@ Each page also describes itself as structured data (schema.org JSON-LD, `src/lib
 studio as an `Organization` and the site as a `WebSite` on the studio's page, the game as a
 `MobileApplication` (free, Android, its store listings as `sameAs`) on its page.
 
-The blog, at `blog.puzzlebazi.studio`, is a separate site, so it's tied to this one on purpose:
-
-- The studio and each game keep one fixed `@id` on both sites (`https://puzzlebazi.studio/#organization`,
-  `https://puzzlebazi.studio/#sort-puzzle`): the blog's posts name the studio as their author and
-  publisher and the game as what they're `about`. Keep `src/lib/schema.ts` and
-  `blog/src/lib/schema.ts` in step.
-- Posts link to the game's page here, with its name as the link's text: where they first mention
-  it, and in the card that closes every post about a game. These are plain links that pass ranking
-  value to this site, and they keep the referrer, so Analytics shows the visits the blog sends.
-- This site links to the blog from the studio's footer.
-
 Add the domain to Google Search Console as a **Domain** property (`puzzlebazi.studio`, verified
-with a DNS record). It covers the site and the blog together; submit both sitemaps there,
-`https://puzzlebazi.studio/sitemap.xml` and `https://blog.puzzlebazi.studio/sitemap.xml`.
+with a DNS record). Submit `https://puzzlebazi.studio/sitemap.xml` there.
 
 ## Before publishing
 
@@ -110,8 +101,8 @@ replace or add one, crop it the same way and set its `width` and `height` in `ST
    to `GAMES` in `src/games/registry.ts`. The studio's home page and footer list it from there.
 4. Put its share images at `public/og/<slug>-fa.jpg` and `-en.jpg` (1200 × 630), and its icons in
    `public/<slug>/`.
-5. In the blog, add it to `GAMES` in `blog/src/lib/games.ts` (and a topic for it), with its page's
-   section ids, so posts about it link to its page and its sections. The sitemap and the game's structured data come from the steps above.
+
+The sitemap and the game's structured data come from the steps above.
 
 The shared building blocks are in `src/components/`: the navbar, footer and language switch, the
 game-style buttons and cards, the studio's icon, logotype and card, and the store badges.
@@ -244,7 +235,6 @@ view is tagged with its `page` (`studio`, `sort-puzzle`) and `language` (`fa`, `
 | `gallery_browse` | A screenshot chosen in the gallery (not the autoplay) | `shot`, `how` (`arrow`, `dot`, `swipe`, `tap`) |
 | `studio_visit` | From a game's page to the studio's | |
 | `game_open` | From the studio's page to a game's | `game`, `place` (`games`, `footer`) |
-| `blog_visit` | From the studio's page to the blog | `place` (`footer`) |
 
 In Clarity's dashboard, filter recordings by these under *Custom events* and *Custom tags*. Visitors
 from the EEA, the UK and Switzerland need a consent signal (`Clarity.consentV2`) before Clarity
