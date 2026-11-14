@@ -31,8 +31,6 @@ function staticHostPreview(): Plugin {
   }
 }
 
-// `pnpm preview`: serves the built site in dist/, nothing else. (React Router's own preview server,
-// which renders the pages during the build, uses vite.config.ts.)
 export default defineConfig({
   appType: 'mpa',
   build: { outDir: 'dist' },
