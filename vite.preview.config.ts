@@ -4,10 +4,6 @@ import { defineConfig, type Plugin } from 'vite'
 
 const isFile = (path: string) => existsSync(path) && statSync(path).isFile()
 
-/**
- * Answers like the static hosts the site is deployed to. Out of the box `vite preview` serves
- * index.html (the redirect from "/") for every unknown path.
- */
 function staticHostPreview(): Plugin {
   return {
     name: 'static-host-preview',
