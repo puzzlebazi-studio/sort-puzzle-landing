@@ -1,1 +1,2 @@
 {"v":1,"kind":"approve","commit":"83ba9e8ae6cffd35d598548bebfe8ae149dd5e7a","stage":"dev","topic":"feature/git-ship","by":"alirezahematidev \u003calirezahematideveloper71@gmail.com\u003e","at":"2026-11-15T17:39:10.033837Z"}
+{"v":1,"kind":"promote","commit":"83ba9e8ae6cffd35d598548bebfe8ae149dd5e7a","stage":"main","topic":"feature/git-ship","merge":"bd75fbfe32fecf7ddbcaa06d91e9341ad81a310b","by":"alirezahematidev \u003calirezahematideveloper71@gmail.com\u003e","at":"2026-11-15T17:39:31.600186Z"}
