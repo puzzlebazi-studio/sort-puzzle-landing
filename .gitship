@@ -1,0 +1,18 @@
+# git-ship — https://github.com/alirezahematidev/git-ship
+# Stages run in order: work is tested on the first ones and released from the last.
+[ship]
+	stages = dev main
+	remote = origin
+	prefix = "feature/"
+	topics = "feature/*"
+	issuePattern = "[A-Z][A-Z0-9]+-[0-9]+"
+	shareApprovals = true
+[stage "dev"]
+	approval = required
+	# gate = ./scripts/check-jira.sh   # must exit 0 before anything leaves this stage
+	since = 5c2d0c7fff2aa3320bece9d6d72bd1dcfe2fb6b7
+[stage "main"]
+	# via = mr   # open a merge request instead of pushing the merge
+	since = 87f3bb4e56538da88a73d7bc0ab4e3eb77775be6
+# [hooks]
+# 	post-promote = ./scripts/notify.sh   # SHIP_TOPIC, SHIP_ISSUE, SHIP_COMMIT, ... are set
