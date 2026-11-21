@@ -1,1 +1,2 @@
 {"v":1,"kind":"approve","commit":"f4849038b8a69d181769ffdcd4c765abfde526c0","stage":"dev","topic":"feature/XYC","by":"alirezahematidev \u003calirezahematideveloper71@gmail.com\u003e","at":"2026-11-21T05:46:39.838583Z"}
+{"v":1,"kind":"promote","commit":"f4849038b8a69d181769ffdcd4c765abfde526c0","stage":"main","topic":"feature/XYC","merge":"7d9c384703869419fc9adf4a9c2c42ca94d89a3c","by":"alirezahematidev \u003calirezahematideveloper71@gmail.com\u003e","at":"2026-11-21T05:47:19.448116Z"}
